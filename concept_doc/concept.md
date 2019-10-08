@@ -20,8 +20,7 @@ that roughly corresponds to its frequency in a given language. The less
 frequently a letter occurs in the language, the higher the point value. For 
 English, the distribution and points for letters are:
 
-![alt 
-text](./letter_values.png)
+![letter value](./letter_values.png)
 
 The game starts by drawing 7 tiles (without replacement) from the “bag” of 100 
 tiles for each of the players. The turn order will be randomly generated for 
@@ -54,7 +53,8 @@ the word would be worth (2 + 1 + 1) * 3 = 12 points. Additionally, players get
 a 50 point bonus for playing all seven tiles in a turn.
 
 ## Additional Functionality (time permitting)
-### Sounds. We want to implement non-trivial sound effects in game play. The 
+### Sounds. 
+We want to implement non-trivial sound effects in game play. The 
 effects include at least button click sounds, the sound when word is played and 
 background music. If we have more time, the sound when word is played can be 
 differentiated by if the word played is valid and the number of points the word 
@@ -65,25 +65,29 @@ languages that have similar alphabets to English. The game provide selection of
 language when player enters game, this will change the tiles available and the 
 dictionary to check the played word with.
 
-### Leaderboard. we’d like to implement a server-wide leaderboard. The 
+### Leaderboard.
+we’d like to implement a server-wide leaderboard. The 
 leaderboard would rank the top players by number of games they won. This would 
 require implementing a database on the server.
 
 ## Expected Challenges
-### Challenge 1. Multiplayer server side logic: Our game is designed for 2-4 
+### Challenge 1. 
+Multiplayer server side logic: Our game is designed for 2-4 
 people to play. The server need to sync the states of 2-4 players. The server 
 also need to ignore or prevent moves coming from other players(browsers) when 
 one player has current turn. The challenge is to enforce the turn-based rules 
 on different players. Also once targeted number of players have joined the 
 table, server need to prevent more players from joining table. 
 
-### Challenge 2. Chat room server side implementation: As stated in the 
+### Challenge 2. 
+Chat room server side implementation: As stated in the 
 instruction, an unlimited number of people should able to observe the game and 
 need to communicate with each other by text chat. Implementing the observer 
 logic that can only let them type text messages without giving them permission 
 to change the current game state may be challenging.
 
-### Challenge 3. Check the validity of played word: Checking of validity need 
+### Challenge 3. 
+Check the validity of played word: Checking of validity need 
 to be implemented on the server side. So we need to obtain a dictionary of 
 words in English(later on other languages such as French, Spanish) or 
 delegating word checking to other online dictionary sources. We think it may be 
