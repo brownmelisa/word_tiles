@@ -21,8 +21,7 @@ frequently a letter occurs in the language, the higher the point value. For
 English, the distribution and points for letters are:
 
 ![alt 
-text](https://github.com/brownmelisa/word_tiles/blob/master/concept_doc/letter_v
-alues.png)
+text](./letter_values.png)
 
 The game starts by drawing 7 tiles (without replacement) from the “bag” of 100 
 tiles for each of the players. The turn order will be randomly generated for 
