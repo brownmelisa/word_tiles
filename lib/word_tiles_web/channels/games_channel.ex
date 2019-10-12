@@ -17,7 +17,7 @@ defmodule WordTilesWeb.GamesChannel do
     end
   end
 
-  def handle_in("increase", socket) do
+  def handle_in("increase", %{"num" => test}, socket) do
     name = socket.assigns[:name]
     game = Game.increase(socket.assigns[:game])
     socket = assign(socket, :game, game)

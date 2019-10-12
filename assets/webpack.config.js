@@ -13,7 +13,7 @@ module.exports = (env, options) => ({
     ]
   },
   entry: {
-    './js/app.js': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
+    './js/app.js': ['./js/app.js'].concat(glob.sync('./vendor/**/*.js'))
   },
   output: {
     filename: 'app.js',
@@ -22,10 +22,13 @@ module.exports = (env, options) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          }
         }
       },
       {
@@ -33,6 +36,9 @@ module.exports = (env, options) => ({
         use: [MiniCssExtractPlugin.loader, 'css-loader']
       }
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.css'],
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '../css/app.css' }),

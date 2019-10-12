@@ -15,53 +15,51 @@ export default function word_tiles_init(root, channel) {
 // }
 
 class WordTiles extends React.Component {
-    // constructor(props) {
-    //     super(props);
+    constructor(props) {
+        super(props);
+        this.channel = props.channel;
+        this.state = {
+            print: 1
+        };
 
-    //     this.channel = props.channel;
-    //     this.state = {
-    //         print: 1
-    //     };
-
-    //     this.channel
-    //         .join()
-    //         .receive("ok", this.got_view.bind(this))
-    //         .receive("error", resp => { console.log("Unable to join", resp); });
-    // }
-
-    // got_view(view) {
-    //     console.log("new view", view);
-    //     this.setState(view.game);
-    // }
-
-    // on_increase(_ev) {
-    //     console.log("increase by 1")
-    //     this.channel.push("increase", {})
-    //         .receive("ok", this.got_view.bind(this));
-    // }
-    render() {
-        return (<div></div>)
+        this.channel
+            .join()
+            .receive("ok", this.got_view.bind(this))
+            .receive("error", resp => { console.log("Unable to join", resp); });
+        console.log("channel", this.channel);
     }
-    // render() {
-    //     return (
-    //         <div>
-    //             <div className="row">
-    //                 <Test print={this.state.print} />
-    //             </div>
-    //             <div className="row">
-    //                 <button onClick={this.on_increase}>
-    //                     Increase by 1
-    //                 </button>
-    //             </div>
-    //         </div>)
-    // }
+
+    got_view(view) {
+        console.log("new view", view);
+        this.setState(view.game);
+    }
+
+    on_increase(_ev) {
+        console.log("increase by 1")
+        this.channel.push("increase", { num: 1 })
+            .receive("ok", this.got_view.bind(this));
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="row">
+                    <Test print={this.state.print} />
+                </div>
+                <div className="row">
+                    <button onClick={this.on_increase.bind(this)}>
+                        Increase by 1
+                    </button>
+                </div>
+            </div>)
+    }
 
 }
 function Test(param) {
-    let { num } = param
+    let { print: num } = param
     return (
         <div>
-            <p>The number</p>
+            <p>The number:</p>
             <p>{num}</p>
         </div>
     )
