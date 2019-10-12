@@ -9,7 +9,9 @@ defmodule WordTiles.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      WordTilesWeb.Endpoint
+      WordTilesWeb.Endpoint,
+      WordTiles.BackupAgent,
+      WordTiles.GameSup
       # Starts a worker by calling: WordTiles.Worker.start_link(arg)
       # {WordTiles.Worker, arg},
     ]

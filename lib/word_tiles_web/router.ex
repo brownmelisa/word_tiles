@@ -17,7 +17,12 @@ defmodule WordTilesWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    # mark this change
+    get "/game/:name", PageController, :game
+
   end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", WordTilesWeb do
