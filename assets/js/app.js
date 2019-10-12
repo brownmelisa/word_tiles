@@ -9,9 +9,21 @@ import css from "../css/app.css"
 //
 // Import dependencies
 //
-import "phoenix_html"
+import "phoenix_html";
+import $ from "jquery";
 
 // Import local files
 //
 // Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
+import socket from "./socket";
+
+// This may be wrong
+import word_tiles_init from "./wordtiles.jsx";
+
+$(() => {
+    let root = document.getElementById('root');
+    if (root) {
+        let channel = socket.channel("games:" + window.gameName, {});
+        word_tiles_init(root, channel);
+    }
+});

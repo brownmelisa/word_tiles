@@ -3,6 +3,7 @@ defmodule WordTilesWeb.UserSocket do
 
   ## Channels
   # channel "room:*", WordTilesWeb.RoomChannel
+  channel "games:*", WordTilesWeb.GamesChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
