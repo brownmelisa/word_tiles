@@ -25,14 +25,14 @@ defmodule WordTilesWeb.UserSocket do
   # the player in the callback functions of the channel module.
   #
   # max_age: 86400 is equivalent to one day in seconds
-  def connect(%{"token" => token}, socket) do
-    case Phoenix.Token.verify(socket, "player auth", token, max_age: 86400) do
-      {:ok, player} ->
-        {:ok, assign(socket, :current_player, player)}
-      {:error, _reason} ->
-        :error
-    end
-  end
+#  def connect(%{"token" => token}, socket) do
+#    case Phoenix.Token.verify(socket, "player auth", token, max_age: 86400) do
+#      {:ok, player} ->
+#        {:ok, assign(socket, :current_player, player)}
+#      {:error, _reason} ->
+#        :error
+#    end
+#  end
 
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
