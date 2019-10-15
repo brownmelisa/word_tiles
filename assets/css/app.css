@@ -1,3 +1,31 @@
 /* This file is for your main application css. */
 
 @import "./phoenix.css";
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(15, 32px);
+    grid-template-rows: repeat(15, 32px);
+    background-color: #303F49;
+    justify-content: center;
+    padding: 10px;
+    width: 500px;
+    height: 550px;
+}
+
+.grid-item {
+    background-color: #FAD7A0;
+    border: 1px solid #F2F3F4;
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.play-btn {
+     /*padding-top: 10px;*/
+     /*display: inline-block;*/
+     margin: auto;
+     font-size: 14px;
+     text-align: center;
+     /*grid-area: 18 / 18 / span 2 / span 3;*/
+}

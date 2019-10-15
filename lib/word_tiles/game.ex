@@ -1,25 +1,57 @@
 defmodule WordTiles.Game do
+
+#  IO.puts("in the program")
+
   def new do
     %{
+      board: make_board(),
       tile_bag: make_bag(),
       letters_left: 100,
       print: 1
     }
   end
 
- def client_view(game) do
+  def client_view(game) do
     %{
         print: game.print
     }
   end
 
   def increase(game) do
-      Map.put(game, :print, game.print+1)
+    Map.put(game, :print, game.print+1)
   end
+
+  # double_letter_positions = [2, 7, 37, 55, 102, 108, 117, 223]
+  # double_word_positions = [11, 21, 41, 51, 81, 111, 171, 211]
+  # triple_letter_positions = [5, 15, 45, 60, 80, 130, 142, 215]
+  # triple_word_positions = [0, 30, 75, 90, 100, 150, 203, 224]
+
+  # returns a new board list whose elements are updated
+  def update(board, pos_list, val) do
+    board
+      # filter the board list for maps that match the double letter positions list
+      |> Enum.filter( &(Enum.member?(pos_list, &1.position)) )
+      # for each of the maps, change the value in bonus to "DL"
+      |> Enum.map(fn x -> Map.put(x, :bonus, val) end)
+  end
+
+  # generates a starting board for a new game, board is 15 x 15 = 225
+  def make_board() do
+    IO.puts("IN MAKE BOARD\n\n")
+    # create list of maps containing the keys: position, letter, and bonus
+    dpos = [2, 3, 7]
+    Enum.to_list(0..9)
+      |> Enum.map(fn x ->  %{position: x, bonus: "", letter: ""} end)
+      |> WordTiles.Game.update(dpos, "DL")
+      |> IO.inspect()
+  end
+
+#    Enum.sort_by(points, fn(p) -> p.points end)
+
 
   # generates a bag of tiles for a new game
   def make_bag do
-    bag = [
+    [
       %{letter: "A", qty: 9, points: 1},
       %{letter: "B", qty: 2, points: 3},
       %{letter: "C", qty: 2, points: 3},

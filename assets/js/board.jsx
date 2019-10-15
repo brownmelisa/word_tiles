@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Stage, Layer, Rect, Text, Circle} from 'react-konva';
+import {Stage, Layer, Rect, Text, Group, Circle} from 'react-konva';
 import _ from 'lodash';
 
 let W = 1024;
 let H = 768;
 
-export default class Shapes extends React.Component {
+export default class Board extends React.Component {
   constructor(props) {
     super(props);
 
@@ -23,9 +23,8 @@ export default class Shapes extends React.Component {
   handleDragStart(e) {
     e.target.setAttrs(
       {
-        shadowOffset: {x: 15, y: 15},
-        scaleX: 1.1,
-        scaleY: 1.1
+        scaleX: 1.5,
+        scaleY: 1.5
       });
   }
 
@@ -37,24 +36,24 @@ export default class Shapes extends React.Component {
         easing: Konva.Easings.ElasticEaseOut,
         scaleX: 1,
         scaleY: 1,
-        shadowOffsetX: 5,
-        shadowOffsetY: 5
       });
   }
 
   render() {
     let squares = _.map(this.state.tiles, (bb, ii) =>
-      <Rect key={ii}
+      <Text draggable
+            key={ii}
+            fontSize={40}
+            text={bb.letter}
             x={bb.x}
             y={H - bb.y}
             width={50}
             height={50}
-            fill="red"
-            shadowBlur={10}
-            draggable
+            align="center"
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
-      />);
+      />
+      );
 
     return (
       <div>
@@ -67,6 +66,7 @@ export default class Shapes extends React.Component {
       </div>
     );
   }
+
 }
 
 // REFERENCES:

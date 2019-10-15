@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from "lodash";
 import Shapes from './shapes';
-import Board from './board';
 import $ from "jquery";
 
 export default function word_tiles_init(root, channel) {
@@ -22,7 +21,12 @@ class WordTiles extends React.Component {
     super(props);
     this.channel = props.channel;
     this.state = {
-      print: 1
+      print: 1,
+      tiles: [
+        {x: 100, y: 700, letter: "A", points: 3},
+        {x: 200, y: 650, letter: "B", points: 4},
+        {x: 300, y: 750, letter: "C", points: 5},
+      ],
     };
 
     this.channel
@@ -43,7 +47,20 @@ class WordTiles extends React.Component {
       .receive("ok", this.got_view.bind(this));
   }
 
+  blank_board_template() {
+    return {bonus: "", letter: ""};
+  }
+
   render() {
+
+    let test = _.times(225, () => this.blank_board_template());
+    let blanks = _.map(test, (test_item, index) => {
+      return (
+        <div className="grid-item" key={index}>
+          {test_item.letter}
+        </div>
+      )});
+
     return (
       <div>
         <div className="row">
@@ -56,8 +73,10 @@ class WordTiles extends React.Component {
         </div>
 
         <div>
-          Testing to see if board renders
-          <Board />
+          <div className="grid-container">
+            {blanks}
+            <button className="play-btn">Play</button>
+          </div>
         </div>
       </div>)
   }
