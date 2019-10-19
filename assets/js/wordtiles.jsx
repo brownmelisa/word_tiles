@@ -21,7 +21,9 @@ class WordTiles extends React.Component {
     super(props);
     this.channel = props.channel;
     this.state = {
-      print: 1,
+      board: [],
+      letters_left: 0,
+      print: 0,
       tiles: [
         {x: 100, y: 700, letter: "A", points: 3},
         {x: 200, y: 650, letter: "B", points: 4},
@@ -48,18 +50,19 @@ class WordTiles extends React.Component {
   }
 
   blank_board_template() {
-    return {bonus: "", letter: ""};
+    return {position: 1, bonus: "DL", letter: ""};
   }
 
   render() {
 
-    let test = _.times(225, () => this.blank_board_template());
-    let blanks = _.map(test, (test_item, index) => {
+    // let test = _.times(225, () => this.blank_board_template());
+    let blanks = _.map(this.state.board, (board_item, index) => {
       return (
         <div className="grid-item" key={index}>
-          {test_item.letter}
+          {board_item.bonus}
         </div>
       )});
+    console.log("printing blanks", blanks);
 
     return (
       <div>

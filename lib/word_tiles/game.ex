@@ -5,15 +5,19 @@ defmodule WordTiles.Game do
   def new do
     %{
       board: make_board(),
-      tile_bag: make_bag(),
+      bag: make_bag(),
       letters_left: 100,
+      players: [],
       print: 1
     }
   end
 
   def client_view(game) do
     %{
-        print: game.print
+      board: game.board,
+      letters_left: game.letters_left,
+      player_tiles: [],
+      print: game.print
     }
   end
 
@@ -27,26 +31,47 @@ defmodule WordTiles.Game do
   # triple_word_positions = [0, 30, 75, 90, 100, 150, 203, 224]
 
   # returns a new board list whose elements are updated
-  def update(board, pos_list, val) do
-    board
-      # filter the board list for maps that match the double letter positions list
-      |> Enum.filter( &(Enum.member?(pos_list, &1.position)) )
-      # for each of the maps, change the value in bonus to "DL"
-      |> Enum.map(fn x -> Map.put(x, :bonus, val) end)
-  end
+#  def update(board, pos_list, val) do
+#    new_list = board
+#      # filter the board list for maps that match the double letter positions list
+#      |> Enum.filter( &(Enum.member?(pos_list, &1.position)) )
+#      # for each of the maps, change the value in bonus to "DL"
+#      |> Enum.map(fn x -> Map.put(x, :bonus, val) end)
+#    new_list
+#  end
 
   # generates a starting board for a new game, board is 15 x 15 = 225
   def make_board() do
-    IO.puts("IN MAKE BOARD\n\n")
+    double_letter = [2, 3, 7]
     # create list of maps containing the keys: position, letter, and bonus
-    dpos = [2, 3, 7]
-    Enum.to_list(0..9)
+    board = Enum.to_list(0..224)
+      # create a list of maps with positions filled in with 0-224
       |> Enum.map(fn x ->  %{position: x, bonus: "", letter: ""} end)
-      |> WordTiles.Game.update(dpos, "DL")
-      |> IO.inspect()
+#      |> update(double_letter, "DL")
+#      |> IO.inspect()
+    board = List.replace_at(board, 112, %{position: 112, bonus: "X", letter: ""})
+    board = List.replace_at(board, 2, %{position: 2, bonus: "DL", letter: ""})
+    board = List.replace_at(board, 102, %{position: 102, bonus: "DL", letter: ""})
+    board = List.replace_at(board, 41, %{position: 41, bonus: "DW", letter: ""})
+    board = List.replace_at(board, 111, %{position: 111, bonus: "DW", letter: ""})
+    board = List.replace_at(board, 15, %{position: 15, bonus: "TL", letter: ""})
+    board = List.replace_at(board, 130, %{position: 130, bonus: "TL", letter: ""})
+    board = List.replace_at(board, 75, %{position: 75, bonus: "TW", letter: ""})
+    board = List.replace_at(board, 203, %{position: 203, bonus: "TW", letter: ""})
   end
 
-#    Enum.sort_by(points, fn(p) -> p.points end)
+
+#    case game.letters_left > 0 do
+#      true  ->
+#        letter_map =
+#          game.bag
+#          |> Enum.filter(fn x -> x.qty > 0 end)
+#          |> Enum.random
+#
+#        # TODO: update the qty and letters_left in bag
+#        Map.put(game, :letters_left, game.letters_left - 1)
+#        letter_map.letter
+#      false -> game
 
 
   # generates a bag of tiles for a new game
@@ -82,23 +107,23 @@ defmodule WordTiles.Game do
     ]
   end
 
-  # select a letter out of the tile bag, return the letter and update value
-  def draw_tile (game) do
-    case game.letters_left > 0 do
-      true  ->
-        letter_map =
-          game.tile_bag
-          |> Enum.filter(fn x -> x.qty > 0 end)
-          |> Enum.random
-        # TODO: update the qty and letters_left in bag
-        letter_map.letter
-      false -> game
-    end
-  end
+
+#    gs = game.guesses
+#         |> MapSet.new()
+#         |> MapSet.put(letter)
+#         |> MapSet.to_list
+#
+#    Map.put(game, :guesses, gs)
+
+end
 
   # TODO:
+  # draw tiles
   # specify number of players in game
   # score calculation
   # rules for tile placement
+  # keep track of letters that each player has
+  # user submits word
+  # verify word in dictionary
+  # calculate points
 
-end
