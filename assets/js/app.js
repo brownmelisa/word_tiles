@@ -25,5 +25,6 @@ $(() => {
     if (root) {
         let channel = socket.channel("games:" + window.gameName, {});
         word_tiles_init(root, channel);
+        // chess_init(root);
     }
 });
