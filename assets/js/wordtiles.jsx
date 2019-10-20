@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect } from 'react-konva';
+import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react-konva';
 import _ from "lodash";
+import PlayerTiles from './playertiles';
+import App from './test';
 
 export default function word_tiles_init(root, channel) {
     ReactDOM.render(<WordTiles channel={channel} />, root);
@@ -15,15 +17,25 @@ class WordTiles extends React.Component {
             print: 1,
             isDragging: false,
             x: 50,
-            y: 50
+            y: 50,
+            player_tiles: [
+                ["A", -1],
+                ["B", -1],
+                ["C", -1],
+                ["D", -1],
+                ["E", -1],
+                ["F", -1],
+            ]
         };
+
+
         this.setting = {
             gridSize: 50,
             width: 750,
             height: 750,
         }
-        this.create_grid = this.create_grid.bind(this);
 
+        this.create_grid = this.create_grid.bind(this);
 
         this.channel
             .join()
@@ -74,31 +86,13 @@ class WordTiles extends React.Component {
         }
     }
 
+
+
     render() {
         let width = this.setting.width, height = this.setting.height;
         return (
             <Stage width={window.innerWidth} height={window.innerHeight}>
                 <Layer>
-                    <Text
-                        text="Draggable Text"
-                        x={this.state.x}
-                        y={this.state.y}
-                        draggable
-                        fill={this.state.isDragging ? 'green' : 'black'}
-                        onDragStart={() => {
-                            this.setState({
-                                isDragging: true
-                            });
-                        }}
-                        onDragEnd={e => {
-                            this.setState({
-                                isDragging: false,
-                                x: e.target.x(),
-                                y: e.target.y()
-                            });
-                        }}
-                    />
-                    <Circle radius={20} x={100} y={100} fill="red" />
                     <Shape
                         x={0}
                         y={0}
@@ -109,8 +103,9 @@ class WordTiles extends React.Component {
                         fill={"brown"}
                         stroke={'blue'}
                     />
-                    <Player_tile />
                 </Layer>
+
+                <PlayerTiles props={this.state.player_tiles} />
 
             </Stage>
 
@@ -118,34 +113,3 @@ class WordTiles extends React.Component {
     }
 }
 
-function Player_tile(_text) {
-    return (
-        <Group
-            x={100}
-            y={200}
-            draggable>
-
-            <Rect
-                width={30}
-                height={30}
-                fill={'brown'} />
-            <Text
-                align={"right"}
-                text={"A"}
-                padding={8}
-                fontSize={18}
-                fill={'black'} />
-        </Group>);
-}
-
-
-
-// function Test(param) {
-//     let { print: num } = param
-//     return (
-//         <div>
-//             <p>The number:</p>
-//             <p>{num}</p>
-//         </div>
-//     )
-// }
