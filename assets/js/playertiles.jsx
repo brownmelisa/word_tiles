@@ -9,61 +9,40 @@ export default class PlayerTiles extends React.Component {
         super(props);
 
         this.gridSize = 50;
+        this.board_width = 750;
+        this.board_height = 750;
         this.props = props;
 
         console.log("player tile", this.props);
     }
 
-    handleDragEnd(e) {
-        console.log("size", this.gridSize)
+    onDragEnd(x_original, y_original, e) {
+        console.log("x, y original", x_original, y_original)
 
-        let originalX = e.target.x();
-        let originalY = e.target.y();
-        let x = Math.floor((originalX + 25) / this.gridSize) * this.gridSize;
-        let y = Math.floor((originalY + 25) / this.gridSize) * this.gridSize;
+        let x_dragend = e.target.x();
+        let y_dragend = e.target.y();
+        let x = Math.floor((x_dragend + 25) / this.gridSize) * this.gridSize;
+        let y = Math.floor((y_dragend + 25) / this.gridSize) * this.gridSize;
+        console.log(x, y)
 
-        e.target.to({
-            duration: 0.2,
-            x: x,
-            y: y
-        });
-        console.log(x, y, originalX, originalY)
+        if ((0 <= x && x <= this.board_width - this.gridSize) &&
+            (0 <= y && y <= this.board_height - this.gridSize)) {
+            e.target.to({
+                duration: 0.2,
+                x: x,
+                y: y
+            });
+        }
+        else {
+            e.target.to({
+                duration: 0.2,
+                x: x_original,
+                y: y_original
+            });
+        }
+
     };
 
-    // getTile(x_corr, y_corr, letter) {
-    //     // change
-    //     console.log("size", this.tile_size)
-    //     let tile_size = 50;
-    //     return <Group
-    //         x={x_corr}
-    //         y={y_corr}
-    //         draggable
-    //         onDragEnd={this.handleDragEnd.bind(this)}>
-    //         <Rect
-    //             width={tile_size}
-    //             height={tile_size}
-    //             fill={'brown'} />
-    //         <Text
-    //             align={"center"}
-    //             text={letter}
-    //             x={0}
-    //             y={0}
-    //             padding={18}
-    //             fontSize={24}
-    //             fill={'black'} />
-    //     </Group>
-    // }
-
-    // handleDragStart(e) {
-    //     e.target.setAttrs({
-    //         shadowOffset: {
-    //             x: 15,
-    //             y: 15
-    //         },
-    //         scaleX: 1.1,
-    //         scaleY: 1.1
-    //     });
-    // };
 
 
     render() {
@@ -81,7 +60,8 @@ export default class PlayerTiles extends React.Component {
                         x={player_x + 55 * i}
                         y={player_y}
                         draggable
-                        onDragEnd={this.handleDragEnd.bind(this)}>
+                        onDragEnd={this.onDragEnd.bind(this,
+                            player_x + 55 * i, player_y)}>
                         <Rect
                             width={tile_size}
                             height={tile_size}

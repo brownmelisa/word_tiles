@@ -98,7 +98,7 @@ class WordTiles extends React.Component {
                         y={0}
                         width={width}
                         height={height}
-                        strokeWidth={2}
+                        strokeWidth={3}
                         sceneFunc={this.create_grid}
                         fill={"brown"}
                         stroke={'blue'}
