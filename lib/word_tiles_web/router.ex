@@ -16,13 +16,19 @@ defmodule WordTilesWeb.Router do
   scope "/", WordTilesWeb do
     pipe_through :browser
 
+    # this route runs the :index action of PageController
+    # which brings you to index.html
     get "/", PageController, :index
 
-    # mark this change
+    # renders game.html for the game name
     get "/game/:name", PageController, :game
 
+#    # creates game name and renders game.html for the game
+#    resources "/game", PageController, only: [:index, :create, :show]
+#
+#    resources "/sessions", SessionController,
+#              only: [:new, :create, :delete], singleton: true
   end
-
 
   # Other scopes may use custom stacks.
   # scope "/api", WordTilesWeb do

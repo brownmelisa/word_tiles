@@ -36,24 +36,47 @@ defmodule WordTiles.Game do
     |> Enum.map(fn x -> (x |> String.replace("\r", "")) end)
   end
 
-  # verify word in dictionary, returns true or false
-  def is_in_dict(game, word) do
-    Enum.member?(game.dictionary, word)
-#    IO.puts(game.dictionary |> length)
-#    IO.puts(game.dictionary |> hd)
-  end
+  # uses to play and pass
+  # if pass, the last two fields will be blank
+#  def submit_word(game, player, letters, positions) do
+  #    get_whole_word
+  #  end
 
+
+
+
+#  end
+#
+#  # verify word in dictionary, returns true or false
+#  def is_in_dict(game, word) do
+#    Enum.member?(game.dictionary, word)
+##    IO.puts(game.dictionary |> length)
+##    IO.puts(game.dictionary |> hd)
+#  end
+#
+#  # calculates the score of a given a list of letters
+#  # and their corresponding positions
+#  def calculate_score(game, letters, positions) do
+#
+#
+#  end
+#
+
+
+  def make_player(name) do
+    %{name: name, letters: []}
+  end
 
   def add_player(game, name) do
     case List.last(game.players) == nil do
       true ->
-        Map.put(game, :players, [%{id: 1, name: name, letters: []}])
+        player = make_player(name)
+        Map.put(game, :players, [player])
       false ->
-        # pop from back, get id and add one
-        new_id = List.last(game.players).id + 1
+        player = make_player(name)
         new_players =
           game.players
-          |> Enum.concat( [%{id: new_id, name: name, letters: []}] )
+          |> Enum.concat( [player] )
         IO.inspect(new_players)
         Map.put(game, :players, new_players)
     end
@@ -87,7 +110,7 @@ defmodule WordTiles.Game do
       |> Enum.map(fn x ->  %{position: x, bonus: "", letter: ""} end)
 #      |> update(double_letter, "DL")
 #      |> IO.inspect()
-    board = List.replace_at(board, 112, %{position: 112, bonus: "X", letter: ""})
+#    board = List.replace_at(board, 112, %{position: 112, bonus: "X", letter: ""})
     board = List.replace_at(board, 2, %{position: 2, bonus: "DL", letter: ""})
     board = List.replace_at(board, 102, %{position: 102, bonus: "DL", letter: ""})
     board = List.replace_at(board, 41, %{position: 41, bonus: "DW", letter: ""})
@@ -98,13 +121,13 @@ defmodule WordTiles.Game do
     List.replace_at(board, 203, %{position: 203, bonus: "TW", letter: ""})
   end
 
-#  def draw_n_tiles(game, letters_left, player_id, n) when n==1 do
-#    game |> draw_tile(game.letters_left, player_id)
+#  def draw_n_tiles(game, letters_left, player_name, n) when n==1 do
+#    game |> draw_tile(game.letters_left, player_name)
 #  end
 #
-#  def draw_n_tiles(game, letters_left, player_id, n) do
-#    new_game = draw_n_tiles(game, game.letters_left, player_id, n-1)
-#    draw_n_tiles(new_game, game.letters_left, player_id, n-1)
+#  def draw_n_tiles(game, letters_left, player_name, n) do
+#    new_game = draw_n_tiles(game, game.letters_left, player_name, n-1)
+#    draw_n_tiles(new_game, game.letters_left, player_name, n-1)
 #  end
 
   def draw_tile(game, player_name) do
@@ -187,20 +210,20 @@ defmodule WordTiles.Game do
     ]
   end
 
-#    gs = game.guesses
-#         |> MapSet.new()
-#         |> MapSet.put(letter)
-#         |> MapSet.to_list
-#
-#    Map.put(game, :guesses, gs)
+
+
 
 end
 
   # TODO:
-  # score calculation
   # rules for tile placement
   # user submits word
-  # chat room
   # display tiles for each user
   # change state of board if user enters an entry on board
+  # delete blank tiles
 
+  # work on play, no pass, no swap button
+
+  # to ask
+  # how to pass player-specific tiles to the front end
+  # call draw tiles multiple times

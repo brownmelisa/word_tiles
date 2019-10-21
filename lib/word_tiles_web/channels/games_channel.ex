@@ -26,6 +26,7 @@ defmodule WordTilesWeb.GamesChannel do
     {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
   end
 
+
 #  # HANDLE A NEW CHAT MESSAGE
 #  def handle_in("new_chat_message", %{"body" => body}, socket) do
 #    broadcast!(socket, "new_chat_message", %{
