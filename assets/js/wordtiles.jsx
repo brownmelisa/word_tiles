@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react-konva';
 import _ from "lodash";
 import PlayerTiles from './playertiles';
-import App from './test';
 
 export default function word_tiles_init(root, channel) {
     ReactDOM.render(<WordTiles channel={channel} />, root);
@@ -13,11 +12,13 @@ class WordTiles extends React.Component {
     constructor(props) {
         super(props);
         this.channel = props.channel;
+
+        let temp_tiles = [...Array(225)].map(() => [""]);
+        temp_tiles[0][0] = "A";
+        console.log("board tiles list", temp_tiles);
+
         this.state = {
-            print: 1,
-            isDragging: false,
-            x: 50,
-            y: 50,
+            board_tiles: temp_tiles,
             player_tiles: [
                 ["A", -1],
                 ["B", -1],
@@ -28,6 +29,7 @@ class WordTiles extends React.Component {
             ]
         };
 
+        console.log("state", this.state);
 
         this.setting = {
             gridSize: 50,
@@ -36,6 +38,8 @@ class WordTiles extends React.Component {
         }
 
         this.create_grid = this.create_grid.bind(this);
+        this.handle_tile_move = this.handle_tile_move.bind(this);
+        this.board_tile_update_handle = this.board_tile_update_handle.bind(this);
 
         this.channel
             .join()
@@ -49,10 +53,22 @@ class WordTiles extends React.Component {
         this.setState(view.game);
     }
 
-    on_increase(_ev) {
-        console.log("increase by 1")
-        this.channel.push("increase", { num: 1 })
-            .receive("ok", this.got_view.bind(this));
+    handle_tile_move(update_tile_list) {
+
+        let temp_state = _.assign({}, this.state, {
+            player_tiles: update_tile_list,
+        });
+        this.setState(temp_state);
+        console.log(this.state);
+    }
+
+    board_tile_update_handle(board_tile_list) {
+
+        let temp_state = _.assign({}, this.state, {
+            player_tiles: board_tile_list,
+        });
+        this.setState(temp_state);
+        console.log(this.state);
     }
 
     create_grid(context) {
@@ -105,11 +121,21 @@ class WordTiles extends React.Component {
                     />
                 </Layer>
 
-                <PlayerTiles props={this.state.player_tiles} />
+                <PlayerTiles
+                    player_tiles={this.state.player_tiles}
+                    board_tiles={this.state.board_tiles}
+                    tile_move_handle={this.handle_tile_move}
+                    board_tile_update_handle={this.board_tile_update_handle}
+                />
+
 
             </Stage>
-
-        )
+            // <div>
+            //     <button>
+            //         Button
+            //     </button>
+            // </div>
+        );
     }
 }
 
