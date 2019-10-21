@@ -7,8 +7,10 @@ defmodule WordTiles.Game do
       board: make_board(),
       bag: make_bag(),
       letters_left: 100,
-      players: [],
-      print: 1
+      players: [],  # [%{id: 1, name: "smokey", letters: ["A", "B"]}],
+      print: 1,
+      dictionary: read_dictionary(),
+      winner: nil
     }
   end
 
@@ -19,6 +21,42 @@ defmodule WordTiles.Game do
       player_tiles: [],
       print: game.print
     }
+  end
+
+  @doc """
+  Reads a text file of 180,000 words in a dictionary and
+  returns a list of words in the dictionary.
+  file taken from: https://scrabutility.com/TWL06.txt
+  """
+  def read_dictionary do
+    "../../data/words_list.txt"
+    |> Path.expand(__DIR__)
+    |> File.read!()
+    |> String.split("\n", trim: true)
+    |> Enum.map(fn x -> (x |> String.replace("\r", "")) end)
+  end
+
+  # verify word in dictionary, returns true or false
+  def is_in_dict(game, word) do
+    Enum.member?(game.dictionary, word)
+#    IO.puts(game.dictionary |> length)
+#    IO.puts(game.dictionary |> hd)
+  end
+
+
+  def add_player(game, name) do
+    case List.last(game.players) == nil do
+      true ->
+        Map.put(game, :players, [%{id: 1, name: name, letters: []}])
+      false ->
+        # pop from back, get id and add one
+        new_id = List.last(game.players).id + 1
+        new_players =
+          game.players
+          |> Enum.concat( [%{id: new_id, name: name, letters: []}] )
+        IO.inspect(new_players)
+        Map.put(game, :players, new_players)
+    end
   end
 
   def increase(game) do
@@ -42,7 +80,7 @@ defmodule WordTiles.Game do
 
   # generates a starting board for a new game, board is 15 x 15 = 225
   def make_board() do
-    double_letter = [2, 3, 7]
+#    double_letter = [2, 3, 7]
     # create list of maps containing the keys: position, letter, and bonus
     board = Enum.to_list(0..224)
       # create a list of maps with positions filled in with 0-224
@@ -57,22 +95,64 @@ defmodule WordTiles.Game do
     board = List.replace_at(board, 15, %{position: 15, bonus: "TL", letter: ""})
     board = List.replace_at(board, 130, %{position: 130, bonus: "TL", letter: ""})
     board = List.replace_at(board, 75, %{position: 75, bonus: "TW", letter: ""})
-    board = List.replace_at(board, 203, %{position: 203, bonus: "TW", letter: ""})
+    List.replace_at(board, 203, %{position: 203, bonus: "TW", letter: ""})
   end
 
-
-#    case game.letters_left > 0 do
-#      true  ->
-#        letter_map =
-#          game.bag
-#          |> Enum.filter(fn x -> x.qty > 0 end)
-#          |> Enum.random
+#  def draw_n_tiles(game, letters_left, player_id, n) when n==1 do
+#    game |> draw_tile(game.letters_left, player_id)
+#  end
 #
-#        # TODO: update the qty and letters_left in bag
-#        Map.put(game, :letters_left, game.letters_left - 1)
-#        letter_map.letter
-#      false -> game
+#  def draw_n_tiles(game, letters_left, player_id, n) do
+#    new_game = draw_n_tiles(game, game.letters_left, player_id, n-1)
+#    draw_n_tiles(new_game, game.letters_left, player_id, n-1)
+#  end
 
+  def draw_tile(game, player_name) do
+    if game.letters_left > 0 do
+      draw_tile(game, player_name, game.letters_left)
+    end
+  end
+
+  def draw_tile(game, player_name, _letters_left) do
+    letter_map = game.bag |> Enum.filter(fn x -> x.qty > 0 end) |> Enum.random
+    game
+    |> pick_from_bag(letter_map)
+    |> add_to_player_letters(player_name, letter_map.letter)
+    |> decrement_letters_left
+  end
+
+  # select a letter out of the tile bag, return the letter and update value
+  def pick_from_bag(game, letter_map) do
+    new_bag =
+      game.bag |> Enum.map(&decrement_count_of_letter(&1, letter_map.letter))
+    Map.put(game, :bag, new_bag)   #or %{game | bag: new_bag}
+  end
+
+  # checks if a letter map has the letter and decrements the count if matches
+  def decrement_count_of_letter(letter_map, letter) do
+    case letter_map.letter == letter do
+      true -> %{letter_map | qty: letter_map.qty - 1}
+      false -> letter_map
+    end
+  end
+
+  def add_to_player_letters(game, player_name, letter) do
+    new_players =
+      game.players
+      |> Enum.map(&find_player_update_letter(&1, player_name, letter))
+    Map.put(game, :players, new_players)
+  end
+
+  def find_player_update_letter(player_map, player_name, letter) do
+    case player_map.name == player_name do
+      true -> %{player_map | letters: Enum.concat(player_map.letters, [letter]) }
+      false -> player_map
+    end
+  end
+
+  def decrement_letters_left(game) do
+    Map.put(game, :letters_left, game.letters_left - 1)
+  end
 
   # generates a bag of tiles for a new game
   def make_bag do
@@ -107,7 +187,6 @@ defmodule WordTiles.Game do
     ]
   end
 
-
 #    gs = game.guesses
 #         |> MapSet.new()
 #         |> MapSet.put(letter)
@@ -118,12 +197,10 @@ defmodule WordTiles.Game do
 end
 
   # TODO:
-  # draw tiles
-  # specify number of players in game
   # score calculation
   # rules for tile placement
-  # keep track of letters that each player has
   # user submits word
-  # verify word in dictionary
-  # calculate points
+  # chat room
+  # display tiles for each user
+  # change state of board if user enters an entry on board
 
