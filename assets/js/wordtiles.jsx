@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react-konva';
 import _ from "lodash";
 import PlayerTiles from './playertiles';
+import Grid from './grid';
 
 export default function word_tiles_init(root, channel) {
     ReactDOM.render(<WordTiles channel={channel} />, root);
@@ -13,8 +14,16 @@ class WordTiles extends React.Component {
         super(props);
         this.channel = props.channel;
 
-        let temp_tiles = [...Array(225)].map(() => [""]);
+        let temp_tiles = [...Array(225)].map(() => ["", ""])
         temp_tiles[0][0] = "A";
+        temp_tiles[10][1] = "DW";
+        temp_tiles[112][1] = "DW";
+
+
+        temp_tiles[15][1] = "DW";
+        temp_tiles[143][1] = "DW";
+        temp_tiles[123][1] = "DW";
+        temp_tiles[213][1] = "DW";
         console.log("board tiles list", temp_tiles);
 
         this.state = {
@@ -33,11 +42,10 @@ class WordTiles extends React.Component {
 
         this.setting = {
             gridSize: 50,
-            width: 750,
-            height: 750,
+            board_width: 750,
+            board_height: 750,
         }
 
-        this.create_grid = this.create_grid.bind(this);
         this.handle_tile_move = this.handle_tile_move.bind(this);
         this.board_tile_update_handle = this.board_tile_update_handle.bind(this);
 
@@ -71,71 +79,31 @@ class WordTiles extends React.Component {
         console.log(this.state);
     }
 
-    create_grid(context) {
-        /*fill the board */
-        context.beginPath();
-        context.fillStyle = "#976B42"
-        context.fill();
-        context.closePath();
-
-        let col = 0, row = 0;
-        let gridSize = this.setting.gridSize;
-        let width = gridSize * 15,
-            height = gridSize * 15;
-        col = Math.ceil(width / gridSize);
-        row = Math.ceil(height / gridSize);
-        // draw row
-        for (let i = 0; i <= col; i++) {
-            context.beginPath();
-            context.moveTo(gridSize * i, 0);
-            context.lineTo(gridSize * i, height);
-            context.stroke();
-            context.closePath();
-        }
-        // Draw colum 
-        for (let j = 0; j <= row; j++) {
-            context.beginPath();
-            context.moveTo(0, gridSize * j);
-            context.lineTo(width, gridSize * j);
-            context.stroke();
-            context.closePath();
-        }
-    }
-
-
-
     render() {
-        let width = this.setting.width, height = this.setting.height;
         return (
             <Stage width={window.innerWidth} height={window.innerHeight}>
-                <Layer>
-                    <Shape
-                        x={0}
-                        y={0}
-                        width={width}
-                        height={height}
-                        strokeWidth={3}
-                        sceneFunc={this.create_grid}
-                        fill={"brown"}
-                        stroke={'blue'}
-                    />
-                </Layer>
+
+                <Grid
+                    setting={this.setting}
+                    board_tiles={this.state.board_tiles}
+                />
 
                 <PlayerTiles
                     player_tiles={this.state.player_tiles}
                     board_tiles={this.state.board_tiles}
+                    setting={this.setting}
                     tile_move_handle={this.handle_tile_move}
                     board_tile_update_handle={this.board_tile_update_handle}
                 />
+            </Stage>);
+    }
+
+}
 
 
-            </Stage>
             // <div>
             //     <button>
             //         Button
             //     </button>
             // </div>
-        );
-    }
-}
 

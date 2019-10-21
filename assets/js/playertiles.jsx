@@ -8,13 +8,15 @@ export default class PlayerTiles extends React.Component {
     constructor(props) {
         super(props);
 
-        this.gridSize = 50;
-        this.board_width = 750;
-        this.board_height = 750;
+
 
         this.player_tiles = props.player_tiles;
         this.board_tiles = props.board_tiles;
+        this.setting = props.setting;
 
+        this.gridSize = this.setting.gridSize;
+        this.board_width = this.setting.board_width;
+        this.board_height = this.setting.board_height;
 
         console.log("tile list", this.player_tiles);
         console.log("prop list", this.props);
@@ -47,7 +49,7 @@ export default class PlayerTiles extends React.Component {
                 this.player_tiles[i][1] = this.getIndexFromPosition(x, y);
                 this.props.tile_move_handle(this.player_tiles);
 
-                this.board_tiles[board_index] = this.player_tiles[i][0];
+                this.board_tiles[board_index][0] = this.player_tiles[i][0];
 
                 // update board tile
                 this.props.board_tile_update_handle(this.board_tiles);
@@ -74,38 +76,6 @@ export default class PlayerTiles extends React.Component {
             });
         }
     };
-
-    create_grid(context) {
-        /*fill the board */
-        context.beginPath();
-        context.fillStyle = "#976B42"
-        context.fill();
-        context.closePath();
-
-        let col = 0, row = 0;
-        let gridSize = this.setting.gridSize;
-        let width = gridSize * 15,
-            height = gridSize * 15;
-        col = Math.ceil(width / gridSize);
-        row = Math.ceil(height / gridSize);
-        // draw row
-        for (let i = 0; i <= col; i++) {
-            context.beginPath();
-            context.moveTo(gridSize * i, 0);
-            context.lineTo(gridSize * i, height);
-            context.stroke();
-            context.closePath();
-        }
-        // Draw colum 
-        for (let j = 0; j <= row; j++) {
-            context.beginPath();
-            context.moveTo(0, gridSize * j);
-            context.lineTo(width, gridSize * j);
-            context.stroke();
-            context.closePath();
-        }
-    }
-
 
     render() {
         let player_x = 100;
@@ -138,8 +108,12 @@ export default class PlayerTiles extends React.Component {
                             fill={'black'} />
                     </Group>
                 ))}
+            </Layer>
+        );
+    }
+}
 
-                {/* <Portal>
+{/* <Portal>
                     <input
                         style={{
                             position: 'absolute',
@@ -150,11 +124,6 @@ export default class PlayerTiles extends React.Component {
                         placeholder="DOM input from Konva nodes"
                     />
                 </Portal> */}
-
-            </Layer>
-        );
-    }
-}
 
 
 
