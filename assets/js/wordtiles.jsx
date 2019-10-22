@@ -4,6 +4,7 @@ import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react
 import _ from "lodash";
 import PlayerTiles from './playertiles';
 import Grid from './grid';
+import ReactStuff from './react_buttom';
 
 export default function word_tiles_init(root, channel) {
     ReactDOM.render(<WordTiles channel={channel} />, root);
@@ -81,21 +82,32 @@ class WordTiles extends React.Component {
 
     render() {
         return (
-            <Stage width={window.innerWidth} height={window.innerHeight}>
+            <div>
+                <div>
+                    <Stage width={window.innerWidth} height={window.innerHeight}>
 
-                <Grid
-                    setting={this.setting}
-                    board_tiles={this.state.board_tiles}
-                />
+                        <Grid
+                            setting={this.setting}
+                            board_tiles={this.state.board_tiles}
+                        />
 
-                <PlayerTiles
-                    player_tiles={this.state.player_tiles}
-                    board_tiles={this.state.board_tiles}
-                    setting={this.setting}
-                    tile_move_handle={this.handle_tile_move}
-                    board_tile_update_handle={this.board_tile_update_handle}
-                />
-            </Stage>);
+                        <PlayerTiles
+                            player_tiles={this.state.player_tiles}
+                            board_tiles={this.state.board_tiles}
+                            setting={this.setting}
+                            tile_move_handle={this.handle_tile_move}
+                            board_tile_update_handle={this.board_tile_update_handle}
+                        />
+                    </Stage>
+                </div>
+                <div >
+                    <button >
+                        dafs
+                     </button>
+                </div>
+            </div>
+
+        );
     }
 
 }
