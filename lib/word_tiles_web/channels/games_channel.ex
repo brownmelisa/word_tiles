@@ -18,7 +18,7 @@ defmodule WordTilesWeb.GamesChannel do
     end
   end
 
-  # def handle_in("play_word", %{"num" => test}, socket) do
+  # def handle_in("play_word",  %{"player_tiles" => new_list}, socket) do
   #   name = socket.assigns[:name]
   #   game = Game.submit_word(socket.assigns[:game])
   #   socket = assign(socket, :game, game)
