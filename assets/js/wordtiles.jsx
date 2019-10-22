@@ -4,7 +4,6 @@ import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react
 import _ from "lodash";
 import PlayerTiles from './playertiles';
 import Grid from './grid';
-import ReactStuff from './react_buttom';
 
 export default function word_tiles_init(root, channel) {
   ReactDOM.render(<WordTiles channel={channel} />, root);
@@ -25,23 +24,34 @@ class WordTiles extends React.Component {
     temp_tiles[143][1] = "DW";
     temp_tiles[123][1] = "DW";
     temp_tiles[213][1] = "DW";
-    console.log("board tiles list", temp_tiles);
+    // this.state = {
+    //   board: temp_tiles,
+    //   player_tiles: [
+    // ["A", -1],
+    //   ["B", -1],
+    //   ["C", -1],
+    //   ["D", -1],
+    //   ["E", -1],
+    //   ["F", -1],
+    //   ]
+    // };
 
     this.state = {
-      board_tiles: temp_tiles,
-      player_tiles: [
-        ["A", -1],
-        ["B", -1],
-        ["C", -1],
-        ["D", -1],
-        ["E", -1],
-        ["F", -1],
-      ]
+      board: [],
+      letters_left: 0,
+      print: 0,
+      player_tiles: [["A", -1],
+      ["B", -1],
+      ["C", -1],
+      ["D", -1],
+      ["E", -1],
+      ["F", -1]]
     };
 
-    console.log("state", this.state);
 
     this.setting = {
+      canvas_height: 850,
+      canvas_width: 800,
       gridSize: 50,
       board_width: 750,
       board_height: 750,
@@ -50,16 +60,7 @@ class WordTiles extends React.Component {
     this.handle_tile_move = this.handle_tile_move.bind(this);
     this.board_tile_update_handle = this.board_tile_update_handle.bind(this);
 
-    // this.state = {
-    //   board: [],
-    //   letters_left: 0,
-    //   print: 0,
-    //   tiles: [
-    //     { x: 100, y: 700, letter: "A", points: 3 },
-    //     { x: 200, y: 650, letter: "B", points: 4 },
-    //     { x: 300, y: 750, letter: "C", points: 5 },
-    //   ],
-    // };
+
 
     this.channel
       .join()
@@ -69,8 +70,8 @@ class WordTiles extends React.Component {
   }
 
   got_view(view) {
-    console.log("new view", view);
     this.setState(view.game);
+    console.log("new state", this.state);
   }
 
   handle_tile_move(update_tile_list) {
@@ -79,7 +80,13 @@ class WordTiles extends React.Component {
       player_tiles: update_tile_list,
     });
     this.setState(temp_state);
-    console.log(this.state);
+    console.log("tile moved", this.state);
+  }
+
+  // wait to push to server.
+  play_word() {
+    this.channel.push("play_word", {})
+      .receive("ok", this.got_view.bind(this));
   }
 
   board_tile_update_handle(board_tile_list) {
@@ -92,19 +99,20 @@ class WordTiles extends React.Component {
   }
 
   render() {
+    console.log("dfasdf", this.state.player_tiles)
     return (
       <div>
         <div>
-          <Stage width={window.innerWidth} height={window.innerHeight}>
+          <Stage width={this.setting.canvas_width} height={this.setting.canvas_height}>
 
             <Grid
               setting={this.setting}
-              board_tiles={this.state.board_tiles}
+              board={this.state.board}
             />
 
             <PlayerTiles
               player_tiles={this.state.player_tiles}
-              board_tiles={this.state.board_tiles}
+              board={this.state.board}
               setting={this.setting}
               tile_move_handle={this.handle_tile_move}
               board_tile_update_handle={this.board_tile_update_handle}
@@ -112,9 +120,9 @@ class WordTiles extends React.Component {
           </Stage>
         </div>
         <div >
-          <button >
-            dafs
-                     </button>
+          <button onClick={this.play_word}>
+            Play Word
+          </button>
         </div>
       </div>
 

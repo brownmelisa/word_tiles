@@ -8,10 +8,10 @@ export default class ReactStuff extends React.Component {
     }
 
     render() {
-        return (<div>9
-            <button>
-                sdfas
-                </button>
+        return (<div>
+            <button onClick>
+                Play word
+            </button>
         </div>);
     }
 }

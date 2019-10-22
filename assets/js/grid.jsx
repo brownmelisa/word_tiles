@@ -13,12 +13,11 @@ export default class Grid extends React.Component {
         this.getPlayedTileList = this.getPlayedTileList.bind(this);
 
         this.setting = props.setting;
-        this.board_tiles = props.board_tiles;
+        this.board = props.board;
 
         this.gridSize = this.setting.gridSize;
         this.tile_size = this.gridSize - 5;
 
-        console.log("Grid Class grid setting", this.gridSize);
     }
 
     create_grid(context) {
@@ -53,9 +52,9 @@ export default class Grid extends React.Component {
 
     getPlayedTileList() {
         let playedTileList = [];
-        for (let i = 0; i < this.board_tiles.length; i++) {
-            if (this.board_tiles[i][0].length > 0) {
-                playedTileList.push([i, this.board_tiles[i][0]]);
+        for (let i = 0; i < this.board.length; i++) {
+            if (this.board[i][0].length > 0) {
+                playedTileList.push([i, this.board[i][0]]);
             }
         }
         return playedTileList;
@@ -63,10 +62,9 @@ export default class Grid extends React.Component {
 
     getBonusTileList() {
         let bonusTileList = [];
-        for (let i = 0; i < this.board_tiles.length; i++) {
-            console.log(this.board_tiles[i])
-            if (this.board_tiles[i][1].length > 0) {
-                bonusTileList.push([i, this.board_tiles[i][1]]);
+        for (let i = 0; i < this.board.length; i++) {
+            if (this.board[i][1].length > 0) {
+                bonusTileList.push([i, this.board[i][1]]);
             }
         }
         return bonusTileList;
