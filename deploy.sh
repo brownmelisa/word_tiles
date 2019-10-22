@@ -25,5 +25,4 @@ mix release
 echo "Starting app..."
 
 # Change this
-_build/prod/rel/memory/bin/memory start
-
+_build/prod/rel/word_tiles/bin/word_tiles start
