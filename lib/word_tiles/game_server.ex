@@ -56,8 +56,8 @@ defmodule WordTiles.GameServer do
 
 
   def handle_call({:guess, name, letter}, _from, game) do
-    game = Hangman.Game.guess(game, letter)
-    Hangman.BackupAgent.put(name, game)
+    game = WordTiles.Game.guess(game, letter)
+    WordTiles.BackupAgent.put(name, game)
     {:reply, game, game}
   end
 

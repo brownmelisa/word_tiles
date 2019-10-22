@@ -18,7 +18,8 @@ defmodule WordTiles.Game do
     %{
       board: game.board,
       letters_left: game.letters_left,
-      player_tiles: [],
+      # This is mock input, change after implementation.
+      player_tiles: ["A","B", "C", "D","E", "F"],
       print: game.print
     }
   end
