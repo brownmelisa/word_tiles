@@ -7,7 +7,7 @@ defmodule WordTiles.Game do
       board: make_board(),
       bag: make_bag(),
       letters_left: 100,
-      players: [],  # [%{id: 1, name: "smokey", letters: ["A", "B"]}],
+      players: [],  # [%{id: 1, name: "smokey", letters: ["A", "B"], score: 0}],
       print: 1,
       dictionary: read_dictionary(),
       winner: nil
@@ -38,33 +38,53 @@ defmodule WordTiles.Game do
 
   # uses to play and pass
   # if pass, the last two fields will be blank
-#  def submit_word(game, player, letters, positions) do
-  #    get_whole_word
-  #  end
+  def submit_word(game, player, letters, positions) do
+    if length(letters) < 1 do
+      game
+    else
+      game
+      |> update_board(game, letters, positions)
+      |> update_player_score(game, player, letters, positions)
+      |> draw_n_tiles(game, player)
+    end
+
+  end
+
+
+  def update_board(game, letters, positions) do
+
+  end
+
+  def get_word(game, letters, positions) do
+    # check if the letter are placed horizontally or vertically
+    if length(letters) == 1 do
+
+    end
+
+    # get the word on the same axis that letters are placed
+
+    # get any peripheral words
+  end
 
 
 
+  # verify word in dictionary, returns true or false
+  def is_in_dict(game, word) do
+    Enum.member?(game.dictionary, word)
+  end
 
-#  end
-#
-#  # verify word in dictionary, returns true or false
-#  def is_in_dict(game, word) do
-#    Enum.member?(game.dictionary, word)
-##    IO.puts(game.dictionary |> length)
-##    IO.puts(game.dictionary |> hd)
-#  end
-#
-#  # calculates the score of a given a list of letters
-#  # and their corresponding positions
-#  def calculate_score(game, letters, positions) do
-#
-#
-#  end
-#
+
+  # calculates the score of a given a list of letters
+  # and their corresponding positions
+  def calculate_score(game, letters, positions) do
+
+
+  end
+
 
 
   def make_player(name) do
-    %{name: name, letters: []}
+    %{name: name, letters: [], score: 0}
   end
 
   def add_player(game, name) do
@@ -178,9 +198,10 @@ defmodule WordTiles.Game do
   end
 
   # generates a bag of tiles for a new game
+
   def make_bag do
     [
-      %{letter: "A", qty: 9, points: 1},
+      %{letter: "A", qty: 10, points: 1},
       %{letter: "B", qty: 2, points: 3},
       %{letter: "C", qty: 2, points: 3},
       %{letter: "D", qty: 4, points: 2},
@@ -196,7 +217,7 @@ defmodule WordTiles.Game do
       %{letter: "N", qty: 6, points: 1},
       %{letter: "O", qty: 8, points: 1},
       %{letter: "P", qty: 2, points: 3},
-      %{letter: "Q", qty: 1, points: 10},
+      %{letter: "Q", qty: 2, points: 10},
       %{letter: "R", qty: 6, points: 1},
       %{letter: "S", qty: 4, points: 1},
       %{letter: "T", qty: 6, points: 1},
@@ -206,11 +227,8 @@ defmodule WordTiles.Game do
       %{letter: "X", qty: 1, points: 8},
       %{letter: "Y", qty: 2, points: 4},
       %{letter: "Z", qty: 1, points: 10},
-      %{letter: "_", qty: 2, points: 0},
     ]
   end
-
-
 
 
 end
@@ -220,7 +238,6 @@ end
   # user submits word
   # display tiles for each user
   # change state of board if user enters an entry on board
-  # delete blank tiles
 
   # work on play, no pass, no swap button
 
