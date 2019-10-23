@@ -1,7 +1,26 @@
+<%# <div class="row">
+  <div class="column">
+    <h1 id="index-page">Join a Game</h1>
+
+    <p>Enter your name:  </p>
+    <p><a href="/game/demo">Join "demo"</a></p>
+
+  </div>
+</div>
+ %>
+<script>
+function join_onclick() {
+  let input = document.getElementById("game_name").value;
+  window.location.assign("/game/"+input);
+}
+</script>
+
 <div class="row">
   <div class="column">
     <h1 id="index-page">Join a Game</h1>
-    <p><a href="/game/demo">Join "demo"</a></p>
+    <p>
+      <input id="game_name" type="text" value="demo">
+    </p>
+    <p><button onclick="join_onclick()" id="join">Join</p>
   </div>
 </div>
-
