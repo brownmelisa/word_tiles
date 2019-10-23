@@ -1,4 +1,6 @@
 defmodule WordTiles.GameSup do
+  # A supervisor that starts `GameServer` processes dynamically.
+
   use DynamicSupervisor
 
   def start_link(arg) do
@@ -11,6 +13,7 @@ defmodule WordTiles.GameSup do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
+  # Starts a `GameServer` process and supervises it.
   def start_child(spec) do
     DynamicSupervisor.start_child(__MODULE__, spec)
   end
