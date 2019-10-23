@@ -24,3 +24,4 @@ config :word_tiles, WordTilesWeb.Endpoint,
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
+config :word_tiles, WordTilesWeb.Endpoint, server: true
