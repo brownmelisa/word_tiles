@@ -5,6 +5,9 @@ export PORT=4795
 export NODEBIN=`pwd`/assets/node_modules/.bin
 export PATH="$PATH:$NODEBIN"
 
+source ./prod-env.sh
+
+
 echo "Building..."
 
 mkdir -p ~/.config
