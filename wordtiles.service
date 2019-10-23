@@ -1,0 +1,17 @@
+[Unit]
+Description=Wordtiles Game Server
+
+[Service]
+Type=simple
+User=wordtiles
+Group=wordtiles
+Restart=on-failure
+Environment=MIX_ENV=prod "PORT=4795"
+Environment=LANG=en_US.UTF-8
+
+WorkingDirectory=/home/wordtiles/word_tiles
+ExecStart=bash /home/wordtiles/word_tiles/start.sh
+
+[Install]
+WantedBy=multi-user.target
+
