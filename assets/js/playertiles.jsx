@@ -18,8 +18,6 @@ export default class PlayerTiles extends React.Component {
         this.board_width = this.setting.board_width;
         this.board_height = this.setting.board_height;
 
-        console.log("player_tiles list", this.player_tiles);
-        console.log("board list", this.board);
     }
 
     getIndexFromPosition(x, y) {
@@ -27,8 +25,6 @@ export default class PlayerTiles extends React.Component {
     }
 
     onDragEnd(x_original, y_original, i, e) {
-
-        console.log("on drag end prop", this.props);
 
         let x_dragend = e.target.x();
         let y_dragend = e.target.y();
@@ -39,17 +35,11 @@ export default class PlayerTiles extends React.Component {
         if ((0 <= x && x <= this.board_width - this.gridSize) &&
             (0 <= y && y <= this.board_height - this.gridSize)) {
             let board_index = this.getIndexFromPosition(x, y);
-            console.log("on drag end prop", this.props);
 
             // board_tile index if there is already a tile there.
             if (this.props.board[board_index].letter.length == 0) {
                 this.props.player_tiles[i][1] = this.getIndexFromPosition(x, y);
-                this.props.tile_move_handle(this.props.player_tiles);
-
-                // this.board[board_index][0] = this.player_tiles[i][0];
-
-                // update board tile
-                // this.props.board_tile_update_handle(this.board);
+                this.props.tile_move_handle(this.props.player_tiles.slice());
 
                 e.target.to({
                     duration: 0.2,
@@ -72,6 +62,8 @@ export default class PlayerTiles extends React.Component {
                 y: y_original
             });
         }
+        console.log("on drag end prop", this.props);
+
     };
 
     render() {
@@ -79,8 +71,7 @@ export default class PlayerTiles extends React.Component {
         let player_y = 775;
         let tile_size = this.gridSize - 5;
         let tile_data = this.props.player_tiles;
-        // console.log("player tiles", Object.keys(tile_data).length, tile_size);
-
+        console.log("render player tiles", tile_data);
         return (
             <Layer>
                 {[...Array(Object.keys(tile_data).length)].map((_, i) => (

@@ -65,14 +65,12 @@ export default class Board extends React.Component {
     let board = this.props.board;
 
     let bonusTileList = [];
-    console.log("board in board", board);
 
     for (let i = 0; i < board.length; i++) {
       if (board[i].bonus.length > 0) {
         bonusTileList.push([i, board[i].bonus]);
       }
     }
-    console.log("bonus tile list", bonusTileList);
     return bonusTileList;
   }
 
@@ -175,23 +173,3 @@ function indexToPosition(index) {
   return [x_pos * 50, y_pos * 50];
 }
 
-
-
-{/* < Group
-    key={12}
-    x={100}
-    y={100}
->
-    <Rect
-        width={60}
-        height={60}
-        fill={'brown'} />
-    <Text
-        align={"center"}
-        text={"AD"}
-        x={0}
-        y={0}
-        padding={18}
-        fontSize={24}
-        fill={'black'} />
-</Group > */}

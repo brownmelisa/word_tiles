@@ -5,23 +5,6 @@ defmodule WordTilesWeb.GamesChannel do
   alias WordTiles.BackupAgent
   alias WordTiles.GameServer
 
-
-  # def join("games:" <> game_name, payload, socket) do
-  #   if authorized?(payload) do
-  #      %{"person" => person_name} = payload
-
-  #     IO.puts("person name: " <> person_name)
-  #     game = BackupAgent.get(game_name) || Game.new()
-  #     BackupAgent.put(game_name, game)
-  #     socket = socket
-  #     |> assign(:game, game)
-  #     |> assign(:game_name, game_name)
-  #     {:ok, %{"join" => game_name, "game" => Game.client_view(game)}, socket}
-  #   else
-  #     {:error, %{reason: "unauthorized"}}
-  #   end
-  # end
-
   def join("games:" <> game_name, payload, socket) do
     if authorized?(payload) do
        %{"person" => person_name} = payload
@@ -29,25 +12,48 @@ defmodule WordTilesWeb.GamesChannel do
       GameServer.start(game_name)
       IO.puts("person name: " <> person_name)
       game = GameServer.peek(game_name)
+      game = GameServer.add_player(game_name, person_name)
 
-      game = BackupAgent.get(game_name) || Game.new()
+      # game = BackupAgent.get(game_name) || Game.new()
+      
       BackupAgent.put(game_name, game)
+
       socket = socket
       |> assign(:game_name, game_name)
       |> assign(:person_name, person_name)
-      {:ok, %{"join" => game_name, "game" => Game.client_view(game)}, socket}
+      {:ok, %{"join" => game_name, "game" => Game.client_view(game, person_name)}, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
   end
 
-
   def handle_in("increase", %{"num" => test}, socket) do
     game_name = socket.assigns[:game_name]
+    person_name = socket.assigns[:person_name]
     game = GameServer.increase(game_name)
-    broadcast!(socket, "update", %{ "game" => Game.client_view(game) })
-    {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
+    broadcast!(socket, "update", %{ "game" => Game.client_view(game, person_name) })
+    {:reply, {:ok, %{ "game" => Game.client_view(game, person_name)}}, socket}
   end
+
+  def handle_in("play_word", %{"letters" => letters, "position" => position}, socket) do
+    game_name = socket.assigns[:game_name]
+    person_name = socket.assigns[:person_name]
+    IO.puts(person_name)
+    IO.puts("letters")
+    IO.inspect(letters)
+    IO.inspect(position)
+    game = GameServer.play_word(game_name, person_name, letters, position)
+
+    broadcast!(socket, "update", %{ "game" => Game.client_view(game, person_name) })
+
+    {:reply, {:ok, %{ "game" => Game.client_view(game, person_name)}}, socket}
+  end
+
+  # def handle_in("start_game", _, socket) do
+  #   game_name = socket.assigns[:game_name]
+  #   person_name = socket.assigns[:person_name]
+  #   game = 
+  # end
 
 #  # HANDLE A NEW CHAT MESSAGE
 #  def handle_in("new_chat_message", %{"body" => body}, socket) do

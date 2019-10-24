@@ -44,9 +44,17 @@ defmodule WordTiles.GameServer do
     GenServer.call(reg(name), {:peek, name})
   end
 
-  # def draw_tile(name, player) do
-  #   GenServer.call(reg(name), {:draw_tile, name, player})
-  # end
+  def start_game(game_name, player) do
+    GenServer.call(reg(game_name), {:start_game, game_name, player})
+  end
+
+  def add_player(game_name, player) do
+    GenServer.call(reg(game_name), {:player, game_name, player})
+  end
+
+  def play_word(game_name, player, letters, position) do
+    GenServer.call(reg(game_name), {:play_word, game_name, player, letters, position})
+  end
 
   def increase(game_name) do
     GenServer.call(reg(game_name), {:increase, game_name})
@@ -58,26 +66,42 @@ defmodule WordTiles.GameServer do
     {:ok, game}
   end
 
+  # def handle_call({:guess, name, letter}, _from, game) do
+  #   game = Hangman.Game.guess(game, letter)
+  #   Hangman.BackupAgent.put(name, game)
+  #   {:reply, game, game}
+  # end
+
+  # def handle_call( {:start_game, game_name, player}, _from, game) do
+  #   game = WordTiles.Game.start_game
+  # end
+
+  # Add player
+  def handle_call({:player, game_name, player}, _from, game) do
+    game = WordTiles.Game.add_player(game, player)
+    WordTiles.BackupAgent.put(game_name, game)
+    {:reply, game, game}
+  end
+
+  # Player word
+  def handle_call({:play_word, game_name, player, letters, position}, _from, game) do 
+    game = WordTiles.Game.submit_word(game, player, letters, position)
+
+    # may need to change this
+    WordTiles.BackupAgent.put(game_name, game)
+    {:reply, game, game}
+  end
+
   def handle_call({:increase, game_name}, _from, game) do
     game = WordTiles.Game.increase(game)
     WordTiles.BackupAgent.put(game_name, game)
     {:reply, game, game}
   end
 
-  def handle_call({:guess, name, letter}, _from, game) do
-    game = Hangman.Game.guess(game, letter)
-    Hangman.BackupAgent.put(name, game)
-    {:reply, game, game}
-  end
 
   def handle_call({:peek, _name}, _from, game) do
     {:reply, game, game}
   end
 
-  # def handle_call({:draw_tile, name, player}, _from, game) do
-  #   game = WordTiles.Game.draw_tile(game, player)
-  #   WordTiles.BackupAgent.put(name, game)
-  #   {:reply, game, game}
-  # end
 
 end
