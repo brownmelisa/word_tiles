@@ -18,14 +18,19 @@ defmodule WordTilesWeb.GamesChannel do
     end
   end
 
-  # def handle_in("play_word",  %{"player_tiles" => new_list}, socket) do
-  #   name = socket.assigns[:name]
-  #   game = Game.submit_word(socket.assigns[:game])
-  #   socket = assign(socket, :game, game)
-  #   BackupAgent.put(name, game)
-  #   {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
-  # end
-  
+#  # HANDLE PLAYER SUBMITTING WORD
+#  def handle_in("play_word",  %{"player_tiles" => new_list}, socket) do
+#     name = socket.assigns[:name]
+#     game = Game.submit_word(socket.assigns[:game])
+#     socket = assign(socket, :game, game)
+#     BackupAgent.put(name, game)
+#     {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
+#  end
+#
+#  def handle_out() do
+#
+#  end
+
 
   def handle_in("increase", %{"num" => test}, socket) do
     name = socket.assigns[:name]
@@ -48,6 +53,8 @@ defmodule WordTilesWeb.GamesChannel do
 #  defp current_player(socket) do
 #    socket.assigns.current_player
 #  end
+
+
 
   # Add authorization logic here as required.
   defp authorized?(_payload) do

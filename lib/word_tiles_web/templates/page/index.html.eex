@@ -1,3 +1,8 @@
+<script>
+ window.gameName = "<%= @name %>";
+</script>
+
+
 <%# <div class="row">
   <div class="column">
     <h1 id="index-page">Join a Game</h1>

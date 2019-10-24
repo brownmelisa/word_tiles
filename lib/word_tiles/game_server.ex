@@ -8,7 +8,6 @@ defmodule WordTiles.GameServer do
   @doc """
   Returns a tuple used to register and lookup a game server process by name.
   - :via tag
-  - name of callback module to use as Registry, Elixir's built-in Registry module
   - tuple of 1. WordTiles.GameReg is the name of our registry process (not actually a file),
              2. the name we want to associate with the pid.
 

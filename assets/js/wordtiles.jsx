@@ -58,7 +58,7 @@ class WordTiles extends React.Component {
 
 
     this.channel
-      .join()
+      .join(username )
       .receive("ok", this.got_view.bind(this))
       .receive("error", resp => { console.log("Unable to join", resp); });
     console.log("channel", this.channel);
