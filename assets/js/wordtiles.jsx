@@ -55,8 +55,6 @@ class WordTiles extends React.Component {
     this.handle_tile_move = this.handle_tile_move.bind(this);
     this.board_tile_update_handle = this.board_tile_update_handle.bind(this);
 
-
-
     this.channel
       .join()
       .receive("ok", this.got_view.bind(this))
@@ -87,7 +85,6 @@ class WordTiles extends React.Component {
     console.log("channel play word", this.channel);
     this.channel.push("play_word", { player_tiles: this.state.player_tiles })
       .receive("ok", this.got_view.bind(this));
-
   }
 
   board_tile_update_handle(board_tile_list) {
@@ -129,13 +126,4 @@ class WordTiles extends React.Component {
 
     );
   }
-
 }
-
-
-            // <div>
-            //     <button>
-            //         Button
-            //     </button>
-            // </div>
-

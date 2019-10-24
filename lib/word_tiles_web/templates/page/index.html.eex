@@ -20,7 +20,7 @@ function join_onclick() {
     <h2>Game Lobby</h2>
     <%= form_for @conn, "/game", fn f -> %>
       <p>Enter game name: <%= text_input f, :game_name %></p>
-      <p>Player name: <%= text_input f, :player_name%></p>
+      <p>Player name: <%= text_input f, :person_name%></p>
       <p><%= submit "Submit" %></p>
     <% end %>  
   </div>
