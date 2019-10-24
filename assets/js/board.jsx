@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Stage, Layer, Portal, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react-konva';
@@ -40,7 +39,7 @@ export default class Board extends React.Component {
       context.stroke();
       context.closePath();
     }
-    // Draw colum 
+    // Draw colum
     for (let j = 0; j <= row; j++) {
       context.beginPath();
       context.moveTo(0, gridSize * j);
@@ -136,7 +135,6 @@ function PlayedTileRender(prop) {
     )
   })
 }
-
 // bonus tile is in form of [[index, letter]...]
 function BonusTileRender(prop) {
   let bonusTile = prop.bonus;
@@ -168,15 +166,11 @@ function BonusTileRender(prop) {
     )
   })
 }
-
 function indexToPosition(index) {
   let y_pos = Math.floor(index / 15);
   let x_pos = index - y_pos * 15;
   return [x_pos * 50, y_pos * 50];
 }
-
-
-
 {/* < Group
     key={12}
     x={100}

@@ -1,10 +1,12 @@
 <script>
  window.gameName = "<%= @name %>";
+ window.personName = "<%= @person %>"
 </script>
 
 <div class="row">
   <div class="column">
     <h1>Word_tile Game: <%= @name %></h1>
+    <h2>Your name: <%= @person %></h2>
     <div id="root">
       React component loading...
     </div>

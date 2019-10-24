@@ -1,31 +1,10 @@
-<script>
- window.gameName = "<%= @name %>";
-</script>
-
-
-<%# <div class="row">
-  <div class="column">
-    <h1 id="index-page">Join a Game</h1>
-
-    <p>Enter your name:  </p>
-    <p><a href="/game/demo">Join "demo"</a></p>
-
-  </div>
-</div>
- %>
-<script>
-function join_onclick() {
-  let input = document.getElementById("game_name").value;
-  window.location.assign("/game/"+input);
-}
-</script>
-
 <div class="row">
   <div class="column">
-    <h1 id="index-page">Join a Game</h1>
-    <p>
-      <input id="game_name" type="text" value="demo">
-    </p>
-    <p><button onclick="join_onclick()" id="join">Join</p>
+    <h2>Game Lobby</h2>
+    <%= form_for @conn, "/game", fn f -> %>
+      <p>Enter game name: <%= text_input f, :game_name %></p>
+      <p>Player name: <%= text_input f, :person_name%></p>
+      <p><%= submit "Submit" %></p>
+    <% end %>
   </div>
 </div>

@@ -21,13 +21,7 @@ defmodule WordTilesWeb.Router do
     get "/", PageController, :index
 
     # renders game.html for the game name
-    get "/game/:name", PageController, :game
-
-#    # creates game name and renders game.html for the game
-#    resources "/game", PageController, only: [:index, :create, :show]
-#
-#    resources "/sessions", SessionController,
-#              only: [:new, :create, :delete], singleton: true
+    post "/game", PageController, :game
   end
 
   # Other scopes may use custom stacks.

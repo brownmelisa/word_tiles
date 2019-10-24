@@ -26,6 +26,4 @@ defmodule WordTiles.Helpers do
       dog bird tsunami pumpkin treat
     )
   end
-
-
 end

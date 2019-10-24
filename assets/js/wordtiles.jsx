@@ -55,13 +55,14 @@ class WordTiles extends React.Component {
     this.handle_tile_move = this.handle_tile_move.bind(this);
     this.board_tile_update_handle = this.board_tile_update_handle.bind(this);
 
-
-
     this.channel
-      .join(username )
+      .join()
       .receive("ok", this.got_view.bind(this))
       .receive("error", resp => { console.log("Unable to join", resp); });
     console.log("channel", this.channel);
+
+    // line add for genserver
+    this.channel.on("update", this.got_view.bind(this));
   }
 
   got_view(view) {
@@ -87,7 +88,6 @@ class WordTiles extends React.Component {
     console.log("channel play word", this.channel);
     this.channel.push("play_word", { player_tiles: this.state.player_tiles })
       .receive("ok", this.got_view.bind(this));
-
   }
 
   board_tile_update_handle(board_tile_list) {
@@ -97,6 +97,13 @@ class WordTiles extends React.Component {
     });
     this.setState(temp_state);
     console.log(this.state);
+  }
+
+  // for testing purpose
+  on_increase(_ev) {
+    console.log("increase by 1")
+    this.channel.push("increase", { num: 1 })
+      .receive("ok", this.got_view.bind(this));
   }
 
   render() {
@@ -125,17 +132,13 @@ class WordTiles extends React.Component {
             Play Word
           </button>
         </div>
+        <div className="row">
+          <button onClick={this.on_increase.bind(this)}>
+            Increase by 1
+          </button>
+          <Text>{this.state.print}</Text>
+        </div>
       </div>
-
     );
   }
-
 }
-
-
-            // <div>
-            //     <button>
-            //         Button
-            //     </button>
-            // </div>
-
