@@ -36,16 +36,20 @@ defmodule WordTiles.GameServer do
     GenServer.start_link(__MODULE__, game, name: reg(name))
   end
 
-  def guess(name, letter) do
-    GenServer.call(reg(name), {:guess, name, letter})
-  end
+  # def guess(name, letter) do
+  #   GenServer.call(reg(name), {:guess, name, letter})
+  # end
 
   def peek(name) do
     GenServer.call(reg(name), {:peek, name})
   end
 
-  def draw_tile(name, player) do
-    GenServer.call(reg(name), {:draw_tile, name, player})
+  # def draw_tile(name, player) do
+  #   GenServer.call(reg(name), {:draw_tile, name, player})
+  # end
+
+  def increase(game_name) do
+    GenServer.call(reg(game_name), {:increase, game_name})
   end
 
   # init is triggered by the start_link function.
@@ -54,6 +58,11 @@ defmodule WordTiles.GameServer do
     {:ok, game}
   end
 
+  def handle_call({:increase, game_name}, _from, game) do
+    game = WordTiles.Game.increase(game)
+    WordTiles.BackupAgent.put(game_name, game)
+    {:reply, game, game}
+  end
 
   def handle_call({:guess, name, letter}, _from, game) do
     game = Hangman.Game.guess(game, letter)
@@ -65,12 +74,10 @@ defmodule WordTiles.GameServer do
     {:reply, game, game}
   end
 
-  def handle_call({:draw_tile, name, player}, _from, game) do
-    game = WordTiles.Game.draw_tile(game, player)
-    WordTiles.BackupAgent.put(name, game)
-    {:reply, game, game}
-  end
-
-
+  # def handle_call({:draw_tile, name, player}, _from, game) do
+  #   game = WordTiles.Game.draw_tile(game, player)
+  #   WordTiles.BackupAgent.put(name, game)
+  #   {:reply, game, game}
+  # end
 
 end

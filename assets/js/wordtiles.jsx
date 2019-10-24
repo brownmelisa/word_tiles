@@ -60,6 +60,9 @@ class WordTiles extends React.Component {
       .receive("ok", this.got_view.bind(this))
       .receive("error", resp => { console.log("Unable to join", resp); });
     console.log("channel", this.channel);
+
+    // line add for genserver
+    this.channel.on("update", this.got_view.bind(this));
   }
 
   got_view(view) {
@@ -96,6 +99,13 @@ class WordTiles extends React.Component {
     console.log(this.state);
   }
 
+  // for testing purpose
+  on_increase(_ev) {
+    console.log("increase by 1")
+    this.channel.push("increase", { num: 1 })
+      .receive("ok", this.got_view.bind(this));
+  }
+
   render() {
     console.log("dfasdf", this.state.player_tiles)
     return (
@@ -121,6 +131,12 @@ class WordTiles extends React.Component {
           <button onClick={this.play_word.bind(this)}>
             Play Word
           </button>
+        </div>
+        <div className="row">
+          <button onClick={this.on_increase.bind(this)}>
+            Increase by 1
+          </button>
+          <Text>{this.state.print}</Text>
         </div>
       </div>
 

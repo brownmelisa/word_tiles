@@ -23,7 +23,7 @@ import word_tiles_init from "./wordtiles.jsx";
 $(() => {
     let root = document.getElementById('root');
     if (root) {
-        let channel = socket.channel("games:" + window.gameName, {});
+        let channel = socket.channel("games:" + window.gameName, { person: window.personName });
         word_tiles_init(root, channel);
     }
 });
