@@ -92,18 +92,40 @@ defmodule WordTiles.Game do
         |> update_player_score(player, letters, positions)
         |> update_player_turn(player)
         |> remove_player_tile(player, letters)
-        |> draw_tile(player)  # should be draw_n_tiles
+        |> draw_tiles(player, length(letters))  # should be draw_n_tiles
+    end
+  end
+
+  defp draw_tiles(game, player, iter) do
+    if iter == 0 do
+      game
+    else     
+      game = draw_tile(game, player)
+      draw_tiles(game, player, iter-1)
     end
   end
 
 
-
-  ## NOT DONE
+  ##  DONE
   defp put_letters_on_board(game, letters, positions) do
     # this is not done, should get loop through array
     # of letters and positions
-    game
-    |> put_letter_on_board(List.first(letters), List.first(positions))
+
+    put_letters_on_board(game, letters, positions, length(letters))
+    # game
+    # |> put_letter_on_board(List.first(letters), List.first(positions))
+  end
+
+  defp put_letters_on_board(game, letters, position, iter) do 
+    if iter == 0 do
+      game
+    else
+      [ll_head | ll] = letters
+      [pos_head | pos] = position
+      game = put_letter_on_board(game, ll_head, pos_head)
+      put_letters_on_board(game, ll, pos, iter-1)
+    end
+
   end
 
   # places the letter in the game's board object
