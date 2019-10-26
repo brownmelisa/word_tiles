@@ -60,10 +60,6 @@ defmodule WordTiles.GameServer do
     GenServer.call(reg(game_name), {:new_msg, game_name, msg})
   end
 
-  def increase(game_name, text) do
-    GenServer.call(reg(game_name), {:increase, game_name, text})
-  end
-
   # init is triggered by the start_link function.
   # returns the state of the game
   def init(game) do
@@ -91,14 +87,6 @@ defmodule WordTiles.GameServer do
     game = WordTiles.Game.submit_word(game, player, letters, position)
 
     # may need to change this
-    WordTiles.BackupAgent.put(game_name, game)
-    {:reply, game, game}
-  end
-
-  # test method
-  def handle_call({:increase, game_name, text}, _from, game) do
-    IO.puts("handle calldfasdfasdf")
-    game = WordTiles.Game.increase(game, text)
     WordTiles.BackupAgent.put(game_name, game)
     {:reply, game, game}
   end

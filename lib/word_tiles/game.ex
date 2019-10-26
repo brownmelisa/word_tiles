@@ -49,9 +49,7 @@ defmodule WordTiles.Game do
     view
   end
 
-  def increase(game, text) do
-    Map.put(game, :print, text)
-  end
+
 
   # Reads a text file of 180,000 words in a dictionary and
   #  returns a list of words in the dictionary.

@@ -18,7 +18,7 @@ import $ from "jquery";
 import socket from "./socket";
 
 // This may be wrong
-import word_tiles_init from "./wordtiles.jsx";
+import word_tiles_init from "./main";
 
 $(() => {
     let root = document.getElementById('root');

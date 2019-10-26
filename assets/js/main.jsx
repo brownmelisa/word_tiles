@@ -46,7 +46,6 @@ class WordTiles extends React.Component {
   got_view(view) {
 
     let new_player_tile_list = view.game.player_tiles.map((ele) => ([ele, -1]));
-    console.log("tile display", new_player_tile_list);
     let temp_state = _.assign({}, view.game, {
       player_tiles: new_player_tile_list
     })
@@ -60,12 +59,10 @@ class WordTiles extends React.Component {
       player_tiles: update_tile_list,
     });
     this.setState(temp_state);
-    console.log("tile moved", this.state);
   }
 
   // wait to push to server.
   play_word() {
-    console.log(" play word", this.state.player_tiles);
     let temp = this.state.player_tiles;
     let placedtiles = temp.filter(([_, index]) => { return index > 0 });
     let letters = placedtiles.map(([ll, _]) => (ll));
@@ -83,12 +80,6 @@ class WordTiles extends React.Component {
   //   this.setState(temp_state);
   // }
 
-  // for testing purpose
-  // on_increase(_ev) {
-  //   console.log("increase by 1")
-  //   this.channel.push("increase", { text: this.state.chat_message })
-  //     .receive("ok", this.got_view.bind(this));
-  // }
 
   handleChatSubmit(_ev) {
     this.channel.push("chat_message", { msg: this.state.chat_message })
@@ -126,13 +117,6 @@ class WordTiles extends React.Component {
             </button>
           </div>
         </div>
-
-        <div>
-          <label>
-            <p>Chatroom:</p>
-            <p>{this.state.print}</p>
-          </label>
-        </div>
         <div>
           <label>
             Chat message:
@@ -140,9 +124,6 @@ class WordTiles extends React.Component {
           </label>
           <button onClick={this.handleChatSubmit.bind(this)}>
             chat
-          </button>
-          <button onClick={this.on_increase.bind(this)}>
-            increase
           </button>
         </div>
         <div>

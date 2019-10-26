@@ -62,7 +62,6 @@ export default class PlayerTiles extends React.Component {
                 y: y_original
             });
         }
-        console.log("on drag end prop", this.props);
 
     };
 
@@ -71,7 +70,6 @@ export default class PlayerTiles extends React.Component {
         let player_y = 775;
         let tile_size = this.gridSize - 5;
         let tile_data = this.props.player_tiles;
-        console.log("render player tiles", tile_data);
         return (
             <Layer>
                 {[...Array(Object.keys(tile_data).length)].map((_, i) => (

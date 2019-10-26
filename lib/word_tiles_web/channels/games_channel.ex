@@ -27,17 +27,6 @@ defmodule WordTilesWeb.GamesChannel do
     end
   end
 
-  def handle_in("increase", %{"text" => text}, socket) do
-    game_name = socket.assigns[:game_name]
-    person_name = socket.assigns[:person_name]
-    text = person_name <> " says: " <> text
-    IO.puts("increase channel")
-    IO.puts(text)
-    game = GameServer.increase(game_name, text)
-    IO.inspect(game)
-    broadcast!(socket, "update", %{ "game" => Game.client_view(game, person_name) })
-    {:reply, {:ok, %{ "game" => Game.client_view(game, person_name)}}, socket}
-  end
 
   def handle_in("chat_message", %{"msg" => msg}, socket) do
 

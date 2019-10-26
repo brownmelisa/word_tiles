@@ -51,12 +51,12 @@ export default class Board extends React.Component {
 
   getPlayedTileList() {
     console.log("in board played tile", this.props.board);
-    console.log(this.props.board.length);
+
     let board = this.props.board;
     let playedTileList = [];
     for (let i = 0; i < board.length; i++) {
       if (board[i].letter.length > 0) {
-        playedTileList.push([i, board[i][0]]);
+        playedTileList.push([i, board[i].letter]);
       }
     }
     return playedTileList;
@@ -109,7 +109,6 @@ function PlayedTileRender(prop) {
   let playedTileList = prop.played;
   let tile_size = prop.tile_size;
   // let [x_pos, y_pos] = indexToPosition(playedTileList[i][0]);
-  // console.log("played tile list", x_pos, y_pos);
   return [...Array(playedTileList.length)].map((_, i) => {
     let [x_pos, y_pos] = indexToPosition(playedTileList[i][0]);
     return (
