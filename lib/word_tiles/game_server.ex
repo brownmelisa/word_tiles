@@ -44,9 +44,9 @@ defmodule WordTiles.GameServer do
     GenServer.call(reg(name), {:peek, name})
   end
 
-  def start_game(game_name, player) do
-    GenServer.call(reg(game_name), {:start_game, game_name, player})
-  end
+  # def start_game(game_name, player) do
+  #   GenServer.call(reg(game_name), {:start_game, game_name, player})
+  # end
 
   def add_player(game_name, player) do
     GenServer.call(reg(game_name), {:player, game_name, player})
@@ -56,8 +56,12 @@ defmodule WordTiles.GameServer do
     GenServer.call(reg(game_name), {:play_word, game_name, player, letters, position})
   end
 
-  def increase(game_name) do
-    GenServer.call(reg(game_name), {:increase, game_name})
+  def new_msg(game_name, msg) do
+    GenServer.call(reg(game_name), {:new_msg, game_name, msg})
+  end
+
+  def increase(game_name, text) do
+    GenServer.call(reg(game_name), {:increase, game_name, text})
   end
 
   # init is triggered by the start_link function.
@@ -66,15 +70,14 @@ defmodule WordTiles.GameServer do
     {:ok, game}
   end
 
-  # def handle_call({:guess, name, letter}, _from, game) do
-  #   game = Hangman.Game.guess(game, letter)
-  #   Hangman.BackupAgent.put(name, game)
-  #   {:reply, game, game}
-  # end
+  # New message handle
+  def handle_call({:new_msg, game_name, msg}, _from, game) do
+        IO.puts("handle calldfasdfasdf")
 
-  # def handle_call( {:start_game, game_name, player}, _from, game) do
-  #   game = WordTiles.Game.start_game
-  # end
+    game = WordTiles.Game.new_msg_from_room(game, msg)
+    WordTiles.BackupAgent.put(game_name, game)
+    {:reply, game, game}
+  end 
 
   # Add player
   def handle_call({:player, game_name, player}, _from, game) do
@@ -92,8 +95,10 @@ defmodule WordTiles.GameServer do
     {:reply, game, game}
   end
 
-  def handle_call({:increase, game_name}, _from, game) do
-    game = WordTiles.Game.increase(game)
+  # test method
+  def handle_call({:increase, game_name, text}, _from, game) do
+    IO.puts("handle calldfasdfasdf")
+    game = WordTiles.Game.increase(game, text)
     WordTiles.BackupAgent.put(game_name, game)
     {:reply, game, game}
   end

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react-konva';
+import { Stage, Layer, Circle, Text, Group, Shape, Tag, Rect, Star, Label } from 'react-konva';
 import _ from "lodash";
 import PlayerTiles from './playertiles';
 import Board from './board';
@@ -13,36 +13,15 @@ class WordTiles extends React.Component {
   constructor(props) {
     super(props);
     this.channel = props.channel;
-
-    // let temp_tiles = [...Array(225)].map(() => ["", ""])
-    // temp_tiles[0][0] = "A";
-    // temp_tiles[10][1] = "DW";
-    // temp_tiles[112][1] = "DW";
-
-
-    // temp_tiles[15][1] = "DW";
-    // temp_tiles[143][1] = "DW";
-    // temp_tiles[123][1] = "DW";
-    // temp_tiles[213][1] = "DW";
-    // this.state = {
-    //   board: temp_tiles,
-    //   player_tiles: [
-    // ["A", -1],
-    //   ["B", -1],
-    //   ["C", -1],
-    //   ["D", -1],
-    //   ["E", -1],
-    //   ["F", -1],
-    //   ]
-    // };
-
     this.state = {
       board: [],
       letters_left: 0,
-      print: 0,
-      player_tiles: []
+      print: "",
+      player_tiles: [],
+      current_player: "",
+      chat_message: "",
+      chat_display: ""
     };
-
 
     this.setting = {
       canvas_height: 850,
@@ -105,14 +84,14 @@ class WordTiles extends React.Component {
   // }
 
   // for testing purpose
-  on_increase(_ev) {
-    console.log("increase by 1")
-    this.channel.push("increase", { num: 1 })
-      .receive("ok", this.got_view.bind(this));
-  }
+  // on_increase(_ev) {
+  //   console.log("increase by 1")
+  //   this.channel.push("increase", { text: this.state.chat_message })
+  //     .receive("ok", this.got_view.bind(this));
+  // }
 
-  start_game() {
-    this.channel.push("start_game", {})
+  handleChatSubmit(_ev) {
+    this.channel.push("chat_message", { msg: this.state.chat_message })
       .receive("ok", this.got_view.bind(this));
   }
 
@@ -122,13 +101,16 @@ class WordTiles extends React.Component {
     return (
       <div>
         <div>
+          <text style={{ fontSize: "2em" }}>
+            Turn to move: Player>>> {this.state.current_player}
+          </text>
+        </div>
+        <div>
           <Stage width={this.setting.canvas_width} height={this.setting.canvas_height}>
-
             <Board
               setting={this.setting}
               board={this.state.board}
             />
-
             <PlayerTiles
               player_tiles={curr_tile}
               board={_.assign({}, this.state.board)}
@@ -143,22 +125,36 @@ class WordTiles extends React.Component {
               Play Word
             </button>
           </div>
-          <div className="column">
-            <button onClick={this.start_game.bind(this)}>
-              Start Game
-            </button>
-          </div>
-
         </div>
-        <div className="row">
-          <button onClick={this.on_increase.bind(this)}>
-            Increase by 1
+
+        <div>
+          <label>
+            <p>Chatroom:</p>
+            <p>{this.state.print}</p>
+          </label>
+        </div>
+        <div>
+          <label>
+            Chat message:
+          <textarea value={this.state.chat_message} onChange={() => this.setState({ chat_message: event.target.value })} />
+          </label>
+          <button onClick={this.handleChatSubmit.bind(this)}>
+            chat
           </button>
-          <Text>{this.state.print}</Text>
+          <button onClick={this.on_increase.bind(this)}>
+            increase
+          </button>
         </div>
-
+        <div>
+          <label>
+            <p>Chatroom:</p>
+            <p>{this.state.chat_display}</p>
+          </label>
+        </div>
       </div>
 
     );
   }
 }
+
+

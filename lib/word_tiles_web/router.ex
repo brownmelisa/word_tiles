@@ -22,6 +22,7 @@ defmodule WordTilesWeb.Router do
 
     # renders game.html for the game name
     post "/game", PageController, :game
+    # get "/game", PageController, :game
 
 
 #    # creates game name and renders game.html for the game

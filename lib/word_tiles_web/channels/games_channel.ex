@@ -27,10 +27,24 @@ defmodule WordTilesWeb.GamesChannel do
     end
   end
 
-  def handle_in("increase", %{"num" => test}, socket) do
+  def handle_in("increase", %{"text" => text}, socket) do
     game_name = socket.assigns[:game_name]
     person_name = socket.assigns[:person_name]
-    game = GameServer.increase(game_name)
+    text = person_name <> " says: " <> text
+    IO.puts("increase channel")
+    IO.puts(text)
+    game = GameServer.increase(game_name, text)
+    IO.inspect(game)
+    broadcast!(socket, "update", %{ "game" => Game.client_view(game, person_name) })
+    {:reply, {:ok, %{ "game" => Game.client_view(game, person_name)}}, socket}
+  end
+
+  def handle_in("chat_message", %{"msg" => msg}, socket) do
+
+    game_name = socket.assigns[:game_name]
+    person_name = socket.assigns[:person_name]
+    msg = person_name <> " says: " <> msg
+    game = GameServer.new_msg(game_name, msg)
     broadcast!(socket, "update", %{ "game" => Game.client_view(game, person_name) })
     {:reply, {:ok, %{ "game" => Game.client_view(game, person_name)}}, socket}
   end
@@ -45,7 +59,6 @@ defmodule WordTilesWeb.GamesChannel do
     game = GameServer.play_word(game_name, person_name, letters, position)
 
     broadcast!(socket, "update", %{ "game" => Game.client_view(game, person_name) })
-
     {:reply, {:ok, %{ "game" => Game.client_view(game, person_name)}}, socket}
   end
 
@@ -55,18 +68,6 @@ defmodule WordTilesWeb.GamesChannel do
   #   game = 
   # end
 
-#  # HANDLE A NEW CHAT MESSAGE
-#  def handle_in("new_chat_message", %{"body" => body}, socket) do
-#    broadcast!(socket, "new_chat_message", %{
-#      game_name: current_player(socket).game_name,
-#      body: body
-#    })
-#    {:noreply, socket}
-#  end
-#
-#  defp current_player(socket) do
-#    socket.assigns.current_player
-#  end
 
   # Add authorization logic here as required.
   defp authorized?(_payload) do

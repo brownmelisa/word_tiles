@@ -30,24 +30,27 @@ defmodule WordTiles.Game do
       dictionary: read_dictionary(),
       winner: nil,
       current_player: "",
-      print: 1
+      chat_display: "",
+      print: ""
     }
   end
 
   def client_view(game, player) do
     IO.puts("client view\n")
-    IO.inspect(player)
-    IO.inspect(get_player_tiles(game, player))
-    %{
+
+    view = %{
       board: game.board,
       letters_left: game.letters_left,
       player_tiles: get_player_tiles(game, player),
+      current_player: game.current_player,
+      chat_display: game.chat_display,
       print: game.print
     }
+    view
   end
 
-  def increase(game) do
-    Map.put(game, :print, game.print+1)
+  def increase(game, text) do
+    Map.put(game, :print, text)
   end
 
   # Reads a text file of 180,000 words in a dictionary and
@@ -79,18 +82,29 @@ defmodule WordTiles.Game do
     IO.puts("in submit word")
     IO.inspect(letters)
     IO.inspect(player)
-    IO.inspect(game.current_player)
-    
-    if length(letters) < 1 || player != game.current_player do
-      game
-    else
-      game
-      |> put_letters_on_board(letters, positions)
-      |> update_player_score(player, letters, positions)
-      |> update_player_turn(player)
-      |> draw_tile(player)  # should be draw_n_tiles
-      IO.puts("submit word game.ex")
-      IO.inspect(game.players)
+    cond do
+      player != game.current_player ->
+        game
+      length(letters) == 0 ->
+        game |> update_player_turn(player)
+      true ->
+        IO.puts("submit word game.ex")
+
+
+        # game = game
+        # |> put_letters_on_board(letters, positions)
+        # |> update_player_score(player, letters, positions)
+        # |> update_player_turn(player)
+        # |> draw_tile(player)  # should be draw_n_tiles
+        # IO.inspect(game.current_player)
+        # IO.inspect(game)
+        # game
+
+        game
+        |> put_letters_on_board(letters, positions)
+        |> update_player_score(player, letters, positions)
+        |> update_player_turn(player)
+        |> draw_tile(player)  # should be draw_n_tiles
     end
   end
 
@@ -137,6 +151,8 @@ defmodule WordTiles.Game do
 
   defp update_player_turn(game, player) do
     next_player = get_next_player(game, player)
+    IO.puts("update player turn")
+    IO.puts(next_player)
     Map.put(game, :current_player, next_player)
   end
 
@@ -147,6 +163,11 @@ defmodule WordTiles.Game do
 
   defp make_player(name) do
     %{name: name, letters: [], score: 0, turn: 0}
+  end
+
+  def new_msg_from_room(game, msg) do
+    game
+    |> Map.put(:chat_display, msg)
   end
 
   def add_player(game, name) do
@@ -177,7 +198,7 @@ defmodule WordTiles.Game do
   end
 
   # returns the name of the next player as string
-  defp get_next_player(game, player) do
+  def get_next_player(game, player) do
     # get turn number of current player
     turn_num =
       game.players
@@ -208,6 +229,8 @@ defmodule WordTiles.Game do
   end
 
   defp draw_tile(game, player) do
+    IO.puts("in draw tile")
+    IO.inspect(game)
     if game.letters_left > 0 do
       draw_tile(game, player, game.letters_left)
     end

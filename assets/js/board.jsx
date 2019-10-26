@@ -1,6 +1,5 @@
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Stage, Layer, Portal, Circle, Text, Group, Shape, Tag, Rect, Star } from 'react-konva';
 import _ from "lodash";
 
@@ -51,13 +50,15 @@ export default class Board extends React.Component {
   }
 
   getPlayedTileList() {
+    console.log("in board played tile", this.props.board);
+    console.log(this.props.board.length);
     let board = this.props.board;
     let playedTileList = [];
-    // for (let i = 0; i < board.length; i++) {
-    //   if (board[i][0].length > 0) {
-    //     playedTileList.push([i, board[i][0]]);
-    //   }
-    // }
+    for (let i = 0; i < board.length; i++) {
+      if (board[i].letter.length > 0) {
+        playedTileList.push([i, board[i][0]]);
+      }
+    }
     return playedTileList;
   }
 
@@ -77,7 +78,6 @@ export default class Board extends React.Component {
 
   render() {
     let width = this.setting.board_width, height = this.setting.board_height;
-    let playedTileList = this.getPlayedTileList();
     // let tile_size = this.gridSize;
     return (
       <Layer>

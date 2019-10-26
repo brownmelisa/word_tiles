@@ -7,12 +7,8 @@ defmodule WordTilesWeb.PageController do
     render(conn, "index.html")
   end
 
-  # def game(conn, %{"game_name" => game}, %{"player_name" => player}) do
-  #   IO.puts(game <> "game   " <> player)
-  #   render conn, "game.html", name: game
-  # end
-
   def game(conn, %{"game_name" => game, "person_name" => person}) do
+    IO.puts("dfasdfasdfasdf")
     IO.puts( "game_name:" <> game <> "\nperson_name:" <> person)
     render(conn, "game.html", %{name: game, person: person})
   end
