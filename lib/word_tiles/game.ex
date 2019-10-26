@@ -87,24 +87,16 @@ defmodule WordTiles.Game do
         game |> update_player_turn(player)
       true ->
         IO.puts("submit word game.ex")
-
-
-        # game = game
-        # |> put_letters_on_board(letters, positions)
-        # |> update_player_score(player, letters, positions)
-        # |> update_player_turn(player)
-        # |> draw_tile(player)  # should be draw_n_tiles
-        # IO.inspect(game.current_player)
-        # IO.inspect(game)
-        # game
-
         game
         |> put_letters_on_board(letters, positions)
         |> update_player_score(player, letters, positions)
         |> update_player_turn(player)
+        |> remove_player_tile(player, letters)
         |> draw_tile(player)  # should be draw_n_tiles
     end
   end
+
+
 
   ## NOT DONE
   defp put_letters_on_board(game, letters, positions) do
@@ -254,6 +246,21 @@ defmodule WordTiles.Game do
     case letter_map.letter == letter do
       true -> %{letter_map | qty: letter_map.qty - 1}
       false -> letter_map
+    end
+  end
+
+  def remove_player_tile(game, player, letter) do
+    players = game.players 
+    |> Enum.map(&remove_played_tiles(&1, player, letter))
+    Map.put(game, :players, players)
+  end
+
+  def remove_played_tiles(player_map, player, letter) do
+     case player_map.name == player do
+      true -> 
+        new_tile = Enum.filter(player_map.letters, fn e -> !Enum.member?(letter, e) end)
+        %{player_map | letters: new_tile}
+      false -> player_map
     end
   end
 

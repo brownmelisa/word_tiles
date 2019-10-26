@@ -72,15 +72,6 @@ class WordTiles extends React.Component {
       .receive("ok", this.got_view.bind(this));
   }
 
-  // board_tile_update_handle(board_tile_list) {
-
-  //   let temp_state = _.assign({}, this.state, {
-  //     player_tiles: board_tile_list,
-  //   });
-  //   this.setState(temp_state);
-  // }
-
-
   handleChatSubmit(_ev) {
     this.channel.push("chat_message", { msg: this.state.chat_message })
       .receive("ok", this.got_view.bind(this));
