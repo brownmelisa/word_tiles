@@ -7,6 +7,12 @@
       <p><%= submit "Submit" %></p>
     <% end %>  
   </div>
+  <div>
+    <h3>
+      Note: currently game works better when they are multiple players at 
+      the table( multiple browser windows opens). There is no option to start the game now, when more than one players joined, you can drag the tile onto the grid, and hit the play word button. <br/>Note, you need to drag the tile back to original position to see the updated tiles. 
+    </h3>
+    </div>
 </div>
 
 

@@ -18,7 +18,9 @@ wordtile.chuhandev.com
 
 
 4. Is your app functionality complete? If not, what's missing?
-No. We made a Scrabble-like game. The board does not update on submission and the score calculation is not complete.
+No. We made a Scrabble-like game.
+The board update on word submission but need to drag the played tile back to original position to show the updated tiles. (Konva component doesn't update to original position)
+The score calculation is not complete.
 
 
 5. Is your app properly deployed? If not, what went wrong?
